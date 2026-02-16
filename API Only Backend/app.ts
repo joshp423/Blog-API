@@ -1,7 +1,6 @@
 import "dotenv/config";
 import express from "express";
-// import indexRouter from "./routes/indexRouter";
-// import "./controllers/indexController.ts";
+import indexRouter from "./routes/indexRouter";
 const app = express();
 import path from "node:path";
 
@@ -15,7 +14,7 @@ const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
-// app.use("/", indexRouter);
+app.use("/", indexRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
