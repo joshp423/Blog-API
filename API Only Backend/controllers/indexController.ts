@@ -74,3 +74,25 @@ export const signUpPost = [
         }
     },
 ];
+
+export async function blogPostsGet (req: Request, res: Response, next: NextFunction) {
+  const blogPosts = await prisma.posts.findMany({
+    orderBy: {
+      id: "desc",
+    }
+  });
+  res.json({
+    blogPosts
+  })
+  return;
+}
+
+export async function blogPostsPost (req: Request, res: Response, next: NextFunction) {
+  // get json from FE with details and put in that way?
+  // await prisma.posts.create({
+  //   data: {
+  //     Title: req.params.title,
+  //     Text:
+  //   }
+  // })
+}
