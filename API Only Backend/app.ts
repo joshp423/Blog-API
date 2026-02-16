@@ -1,6 +1,5 @@
 import "dotenv/config";
 import express from "express";
-import { resolveSoa } from "node:dns";
 // import indexRouter from "./routes/indexRouter";
 // import "./controllers/indexController.ts";
 const app = express();
