@@ -42,26 +42,7 @@ passport.use(
         return done(null, false);
         // or you could create a new account
     })
-    // try {
-    //   const user = await prisma.user.findUnique({
-    //     where: {
-    //       username: username,
-    //     },
-    //   });
-
-    //   if (!user) {
-    //     return done(null, false, { message: "Incorrect username" });
-    //   }
-
-    //   const match = await bcrypt.compare(password, user.password);
-    //   if (!match) {
-    //     // passwords do not match!
-    //     return done(null, false, { message: "Incorrect password" });
-    //   }
-    //   return done(null, user);
-    // } catch (err) {
-    //   return done(err);
-    // }
+    
   }),
 );
 
@@ -100,14 +81,41 @@ export async function logIn (req: Request, res: Response, next: NextFunction) {
     password: req.headers['password'],
   }
 
-  jwt.sign({user}, 'secretKey', {expiresIn: '30s'}, (err, token) => {
+  try {
+      const userCheck = await prisma.user.findUnique({
+        where: {
+          username: user.username,
+        },
+      });
+
+      if (!user) {
+        res.sendStatus(400);
+        res.json({ message: "Incorrect username" });
+      }
+
+      const match = await bcrypt.compare(user.password, userCheck.password);
+      if (!match) {
+        res.sendStatus(400);
+        res.json({ message: "Incorrect password" });
+      }
+      res.json({ message: 'succesfully logged in' })
+      jwt.sign({user}, 'secretKey', {expiresIn: '30s'}, (err, token) => {
+        res.json({
+          token
+        });
+      });
+    } catch (err) {
+      res.sendStatus(500);
+      return (err);
+    }
+
+
+};
+jwt.sign({user}, 'secretKey', {expiresIn: '30s'}, (err, token) => {
     res.json({
       token
     });
   });
-
-};
-
 function verifyToken(req: Request, res: Response, next: NextFunction) {
   // Get auth header value
   const bearerHeader = req.headers['authorization'];
