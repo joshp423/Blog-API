@@ -3,7 +3,10 @@ import { body, validationResult, matchedData } from "express-validator";
 import prisma from "../lib/prisma.js";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import {Strategy as JWTStrategy} from "passport-jwt";
+import {ExtractJwt as ExtractJwt} from "passport-jwt";
 
 const emailLengthErr = "must be between 1 and 50 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
@@ -22,34 +25,48 @@ const validateSignUp = [
     .withMessage(`Password: ${passwordAlphaNumericErr}`),
 ];
 
+const opts = {}
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = 'secret';
 
 passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          username: username,
-        },
-      });
+  new JWTStrategy(opts function(jwt_payload, done) {
 
-      if (!user) {
-        return done(null, false, { message: "Incorrect username" });
+    User.findOne({id: jwt_payload.sub}, function(err, user) {
+      if (err) {
+        return done(err, false);
       }
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+        // or you could create a new account
+    })
+    // try {
+    //   const user = await prisma.user.findUnique({
+    //     where: {
+    //       username: username,
+    //     },
+    //   });
 
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        // passwords do not match!
-        return done(null, false, { message: "Incorrect password" });
-      }
-      return done(null, user);
-    } catch (err) {
-      return done(err);
-    }
+    //   if (!user) {
+    //     return done(null, false, { message: "Incorrect username" });
+    //   }
+
+    //   const match = await bcrypt.compare(password, user.password);
+    //   if (!match) {
+    //     // passwords do not match!
+    //     return done(null, false, { message: "Incorrect password" });
+    //   }
+    //   return done(null, user);
+    // } catch (err) {
+    //   return done(err);
+    // }
   }),
 );
 
 
-export const signUpPost = [
+export const signUp = [
     ...validateSignUp,
     async (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
@@ -74,6 +91,42 @@ export const signUpPost = [
         }
     },
 ];
+
+export async function logIn (req: Request, res: Response, next: NextFunction) {
+
+  const user = {
+    id: req.headers['id'],
+    username: req.headers['username'],
+    password: req.headers['password'],
+  }
+
+  jwt.sign({user}, 'secretKey', {expiresIn: '30s'}, (err, token) => {
+    res.json({
+      token
+    });
+  });
+
+};
+
+function verifyToken(req: Request, res: Response, next: NextFunction) {
+  // Get auth header value
+  const bearerHeader = req.headers['authorization'];
+  // Check if bearer is undefined
+  if(typeof bearerHeader !== 'undefined') {
+    // Split at the space
+    const bearer = bearerHeader.split(' ');
+    // Get token from array
+    const bearerToken = bearer[1];
+    // Set the token
+    req.token = bearerToken;
+    // Next middleware
+    next();
+  } else {
+    // Forbidden
+    res.sendStatus(403);
+  }
+
+}
 
 export async function blogPostsGet (req: Request, res: Response, next: NextFunction) {
   const blogPosts = await prisma.posts.findMany({
