@@ -22,8 +22,8 @@ model User {
 
 model Posts {
   id Int @id @default(autoincrement())
-  Title String
-  Text String
+  title String
+  text String
   timeposted DateTime
   published Boolean
   comments Comments[]

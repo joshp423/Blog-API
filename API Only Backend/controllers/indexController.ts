@@ -4,13 +4,27 @@ import prisma from "../lib/prisma.js";
 import passport from "passport";
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import {Strategy as JWTStrategy} from "passport-jwt";
-import {ExtractJwt as ExtractJwt} from "passport-jwt";
-import z from 'zod';
+import { Strategy as JWTStrategy } from "passport-jwt";
+import { ExtractJwt as ExtractJwt } from "passport-jwt";
+import z from "zod";
 
 const emailLengthErr = "must be between 1 and 50 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
 const passwordAlphaNumericErr = "must contain at least a letter and a number";
+
+const userSchema = z.object({
+  //parses the object to the schema, narrowing the types that are allowed
+  id: z.string(),
+  username: z.string(),
+  password: z.string(),
+});
+
+const createPostBodySchema = z.object({
+  //parses the object to the schema, narrowing the types that are allowed
+  title: z.string(),
+  text: z.string(),
+  published: z.boolean()
+});
 
 const validateSignUp = [
   body("username")
@@ -42,100 +56,98 @@ const validateSignUp = [
 //         return done(null, false);
 //         // or you could create a new account
 //     })
-    
+
 //   }),
 // );
 
-
 export const signUp = [
-    ...validateSignUp,
-    async (req: Request, res: Response, next: NextFunction) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          res.sendStatus(400)
-        }
-        const { username, password } = matchedData(req);
-        try {
-          const hashedPassword = await bcrypt.hash(password, 10);
-          await prisma.user.create({
-            data: {
-              username,
-              password: hashedPassword,
-            },
-          });
-          res.json({
-            message: 'Successful Sign-Up'
-          });
-        } catch (error) {
-          console.error(error);
-          next(error);
-        }
-    },
-];
-
-export async function logIn (req: Request, res: Response, next: NextFunction) {
-
-  const userSchema = z.object({
-    id: z.string(),
-    username: z.string(),
-    password: z.string(),
-  })
-
-  const user = {
-    id: req.headers['id'],
-    username: req.headers['username'],
-    password: req.headers['password'],
-  }
-
-  const parsedUser = userSchema.parse(user)
-  
-  if (typeof user.username != 'string') {
-    res.sendStatus(400)
-    res.json({ message: "Incorrect header" });
-    return;
-  }
-  
-  try {
-      const userCheck = await prisma.user.findUnique({
-        where: {
-          username: user.username,
+  ...validateSignUp,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.sendStatus(400);
+    }
+    const { username, password } = matchedData(req);
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await prisma.user.create({
+        data: {
+          username,
+          password: hashedPassword,
         },
       });
+      return res.status(201).json({ message: "Successful Sign-Up" });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  },
+];
 
-      if (!userCheck) {
-        res.sendStatus(400);
-        res.json({ message: "Incorrect username" });
-        return;
-      }
 
-      const match = await bcrypt.compare(parsedUser.password, userCheck.password);
-      if (!match) {
-        res.sendStatus(400);
-        res.json({ message: "Incorrect password" });
-      }
-      res.json({ message: 'succesfully logged in' })
-      jwt.sign({user}, 'secretKey', {expiresIn: '30s'}, (token:object) => {
-        res.json({
-          token
-        });
-      });
-  } catch (err) {
-      res.sendStatus(500);
-      return (err);
+export async function logIn(req: Request, res: Response, next: NextFunction) {
+
+
+  const user = {
+    id: req.headers["id"],
+    username: req.headers["username"],
+    password: req.headers["password"],
+  };
+
+  const parsedUser = userSchema.parse(user);
+
+  if (typeof parsedUser.username != "string") {
+    res.sendStatus(400);
+    return res.json({ message: "Incorrect header" });
   }
-  
 
-};
+  try {
+    const userCheck = await prisma.user.findUnique({
+      where: {
+        username: parsedUser.username,
+      },
+    });
 
-function verifyToken(req: Request, res: Response, next: NextFunction) {
+    if (!userCheck) {
+      res.sendStatus(400);
+      return res.json({ message: "Incorrect username" });
+    }
+
+    const match = await bcrypt.compare(parsedUser.password, userCheck.password);
+    if (!match) {
+      res.sendStatus(400);
+      res.json({ message: "Incorrect password" });
+    }
+    res.json({ message: "succesfully logged in" });
+    jwt.sign({ user }, "secretKey", { expiresIn: "30s" }, (err, token) => {
+      if (err || !token) {
+        //need to account for an error or no token
+        return res.status(500).json({ message: "Token generation failed" });
+      }
+      res.json({ token });
+    });
+  } catch (err) {
+    res.sendStatus(500);
+    return err;
+  }
+}
+
+interface AuthRequest extends Request {
+  token?: string;
+}
+export function verifyToken(req: AuthRequest, res: Response, next: NextFunction) {
   // Get auth header value
-  const bearerHeader = req.headers['authorization'];
+  const bearerHeader = req.headers["authorization"];
   // Check if bearer is undefined
-  if(typeof bearerHeader !== 'undefined') {
+  if (typeof bearerHeader !== "undefined") {
     // Split at the space
-    const bearer = bearerHeader.split(' ');
+    const bearer = bearerHeader.split(" ");
     // Get token from array
     const bearerToken = bearer[1];
+
+    if (!bearerToken) {
+      return res.status(403);
+    }
     // Set the token
     req.token = bearerToken;
     // Next middleware
@@ -144,45 +156,64 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
     // Forbidden
     res.sendStatus(403);
   }
-
 }
 
-export async function blogPostsGet (req: Request, res: Response, next: NextFunction) {
-  
+export async function blogPostsGet(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const blogPosts = await prisma.posts.findMany({
     orderBy: {
       id: "desc",
-    }
+    },
   });
   res.json({
-    blogPosts
-  })
+    blogPosts,
+  });
   return;
 }
 
-export async function blogPostGet (req: Request, res: Response, next: NextFunction) {
-
+export async function blogPostGet(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const blogPost = await prisma.posts.findUnique({
     where: {
-      id: req.headers['blogpostId']
-    }
-  })
+      id: Number(req.headers["blogpostId"]),
+    },
+  });
   res.json({
-    blogPost
-  })
+    blogPost,
+  });
   return;
 }
 
-export async function blogPostsPost ( req: Request, res: Response, next: NextFunction) {
-  verifyToken
-  // get json from FE with details and put in that way?
-  await prisma.posts.create({
-    data: {
-      title: req.headers['title'],
-      text: req.headers['text'],
-      timeposted: new Date()
-    }
-  })
-}
 
-//add try catches to prisma operations
+export async function blogPostsPost(
+  req: Request,
+  res: Response,
+) {
+  try {
+    
+    const { title, text, published } = createPostBodySchema.parse(req.body)
+
+    if (!title || !text) {
+      return res.status(400).json({ message: "Missing fields" });
+    }
+
+    const post = await prisma.posts.create({
+      data: {
+        title,
+        text,
+        published,
+        timeposted: new Date(),
+      },
+    });
+
+  return res.status(201).json(post);
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid input" });
+  }
+}
