@@ -6,6 +6,7 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import {Strategy as JWTStrategy} from "passport-jwt";
 import {ExtractJwt as ExtractJwt} from "passport-jwt";
+import z from 'zod';
 
 const emailLengthErr = "must be between 1 and 50 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
@@ -24,26 +25,26 @@ const validateSignUp = [
     .withMessage(`Password: ${passwordAlphaNumericErr}`),
 ];
 
-const opts = {}
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 'secret';
+// const opts = {}
+// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+// opts.secretOrKey = 'secret';
 
-passport.use(
-  new JWTStrategy(opts function(jwt_payload, done) {
+// passport.use(
+//   new JWTStrategy(opts function(jwt_payload, done) {
 
-    User.findOne({id: jwt_payload.sub}, function(err, user) {
-      if (err) {
-        return done(err, false);
-      }
-      if (user) {
-        return done(null, user);
-      } else {
-        return done(null, false);
-        // or you could create a new account
-    })
+//     User.findOne({id: jwt_payload.sub}, function(err, user) {
+//       if (err) {
+//         return done(err, false);
+//       }
+//       if (user) {
+//         return done(null, user);
+//       } else {
+//         return done(null, false);
+//         // or you could create a new account
+//     })
     
-  }),
-);
+//   }),
+// );
 
 
 export const signUp = [
@@ -74,12 +75,26 @@ export const signUp = [
 
 export async function logIn (req: Request, res: Response, next: NextFunction) {
 
+  const userSchema = z.object({
+    id: z.string(),
+    username: z.string(),
+    password: z.string(),
+  })
+
   const user = {
     id: req.headers['id'],
     username: req.headers['username'],
     password: req.headers['password'],
   }
 
+  const parsedUser = userSchema.parse(user)
+  
+  if (typeof user.username != 'string') {
+    res.sendStatus(400)
+    res.json({ message: "Incorrect header" });
+    return;
+  }
+  
   try {
       const userCheck = await prisma.user.findUnique({
         where: {
@@ -87,12 +102,13 @@ export async function logIn (req: Request, res: Response, next: NextFunction) {
         },
       });
 
-      if (!user) {
+      if (!userCheck) {
         res.sendStatus(400);
         res.json({ message: "Incorrect username" });
+        return;
       }
 
-      const match = await bcrypt.compare(user.password, userCheck.password);
+      const match = await bcrypt.compare(parsedUser.password, userCheck.password);
       if (!match) {
         res.sendStatus(400);
         res.json({ message: "Incorrect password" });
@@ -103,11 +119,11 @@ export async function logIn (req: Request, res: Response, next: NextFunction) {
           token
         });
       });
-    } catch (err) {
+  } catch (err) {
       res.sendStatus(500);
       return (err);
-    }
-
+  }
+  
 
 };
 
@@ -162,9 +178,9 @@ export async function blogPostsPost ( req: Request, res: Response, next: NextFun
   // get json from FE with details and put in that way?
   await prisma.posts.create({
     data: {
-      Title: req.headers['title'],
-      Text: req.headers['text'],
-      Timeposted: new Date()
+      title: req.headers['title'],
+      text: req.headers['text'],
+      timeposted: new Date()
     }
   })
 }
