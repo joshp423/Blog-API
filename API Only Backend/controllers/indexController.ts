@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import { body, validationResult, matchedData } from "express-validator";
 import prisma from "../lib/prisma.js";
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import {Strategy as JWTStrategy} from "passport-jwt";
@@ -99,7 +98,7 @@ export async function logIn (req: Request, res: Response, next: NextFunction) {
         res.json({ message: "Incorrect password" });
       }
       res.json({ message: 'succesfully logged in' })
-      jwt.sign({user}, 'secretKey', {expiresIn: '30s'}, (err, token) => {
+      jwt.sign({user}, 'secretKey', {expiresIn: '30s'}, (token:object) => {
         res.json({
           token
         });
@@ -111,11 +110,7 @@ export async function logIn (req: Request, res: Response, next: NextFunction) {
 
 
 };
-jwt.sign({user}, 'secretKey', {expiresIn: '30s'}, (err, token) => {
-    res.json({
-      token
-    });
-  });
+
 function verifyToken(req: Request, res: Response, next: NextFunction) {
   // Get auth header value
   const bearerHeader = req.headers['authorization'];
@@ -137,6 +132,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function blogPostsGet (req: Request, res: Response, next: NextFunction) {
+  
   const blogPosts = await prisma.posts.findMany({
     orderBy: {
       id: "desc",
@@ -148,12 +144,29 @@ export async function blogPostsGet (req: Request, res: Response, next: NextFunct
   return;
 }
 
-export async function blogPostsPost (req: Request, res: Response, next: NextFunction) {
-  // get json from FE with details and put in that way?
-  // await prisma.posts.create({
-  //   data: {
-  //     Title: req.params.title,
-  //     Text:
-  //   }
-  // })
+export async function blogPostGet (req: Request, res: Response, next: NextFunction) {
+
+  const blogPost = await prisma.posts.findUnique({
+    where: {
+      id: req.headers['blogpostId']
+    }
+  })
+  res.json({
+    blogPost
+  })
+  return;
 }
+
+export async function blogPostsPost ( req: Request, res: Response, next: NextFunction) {
+  verifyToken
+  // get json from FE with details and put in that way?
+  await prisma.posts.create({
+    data: {
+      Title: req.headers['title'],
+      Text: req.headers['text'],
+      Timeposted: new Date()
+    }
+  })
+}
+
+//add try catches to prisma operations
