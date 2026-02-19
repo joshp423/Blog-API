@@ -6,7 +6,7 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { Strategy as JWTStrategy } from "passport-jwt";
 import { ExtractJwt as ExtractJwt } from "passport-jwt";
-import z from "zod";
+import z, { number } from "zod";
 
 
 
@@ -133,7 +133,7 @@ export async function logInView(req: Request, res: Response, next: NextFunction)
         //need to account for an error or no token
         return res.status(500).json({ message: "Token generation failed" });
       }
-      return res.json({ token }).json({ message: "succesfully logged in" });
+      return res.json({ token }).json({ message: "succesfully logged in" }).json({ userCheck });
     });
   } catch (err) {
     res.sendStatus(500);
@@ -182,7 +182,7 @@ export async function logInEdit(req: Request, res: Response, next: NextFunction)
         //need to account for an error or no token
         return res.status(500).json({ message: "Token generation failed" });
       }
-      return res.json({ token }).json({ message: "succesfully logged in" });;
+      return res.json({ token }).json({ message: "succesfully logged in" }).json({ userCheck });;
     });
   } catch (err) {
     res.sendStatus(500);
@@ -248,32 +248,6 @@ export async function getSelectedBlogPost(
   return;
 }
 
-export async function editSelectedBlogPost(
-  req: Request,
-  res: Response,
-) {
-  try {
-    
-    const { id, title, text } = editPostBodySchema.parse(req.body)
-
-    if (!title || !text) {
-      return res.status(400).json({ message: "Missing fields" });
-    }
-
-    const updatedPost = await prisma.posts.update({
-      where: { id },
-      data: {
-        title,
-        text,
-      },
-    });
-
-  return res.status(201).json(updatedPost);
-
-  } catch (error) {
-    return res.status(400).json({ error });
-  }
-}
 export async function createNewBlogPost(
   req: Request,
   res: Response,
@@ -301,6 +275,92 @@ export async function createNewBlogPost(
     return res.status(400).json({ error });
   }
 }
+
+export async function editSelectedBlogPost(
+  req: Request,
+  res: Response,
+) {
+  try {
+    
+    const { id, title, text } = editPostBodySchema.parse(req.body)
+
+    const updatedPost = await prisma.posts.update({
+      where: { id },
+      data: {
+        title,
+        text,
+      },
+    });
+
+  return res.status(201).json(updatedPost);
+
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+}
+
+export async function togglePublishSelectedBlogPost(
+  req: Request,
+  res: Response,
+) {
+  try {
+    
+    const id = Number(req.body['id'])
+
+    const selectedPost = await prisma.posts.findUnique({
+      where: {
+        id: Number(req.body["id"]),
+      },
+    });
+
+    let updatedPost = null;
+
+    if (selectedPost?.published) {
+      updatedPost = await prisma.posts.update({
+        where: { id },
+        data: {
+          published: false
+        },
+      });
+    }
+    else {
+      updatedPost = await prisma.posts.update({
+        where: { id },
+        data: {
+          published: true
+        },
+      });
+    }
+    return res.status(201).json(updatedPost);
+
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+}
+
+
+
+export async function deleteSelectedBlogPost(
+  req: Request,
+  res: Response,
+) {
+  try {
+    
+    const id = Number(req.body['id'])
+
+    if (!id) {
+      return res.status(400).json({ message: "Missing fields" });
+    }
+
+    const deletedPost = await prisma.posts.delete({where: { id } });
+
+    return res.status(200).json(deletedPost);
+
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+}
+
 
 export async function getAllComments (
   req: Request,
