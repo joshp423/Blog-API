@@ -6,7 +6,9 @@ type BlogPostOverviewProps = {
 
 function BlogPostOverview({ post }: BlogPostOverviewProps) {
     return(
-        <h1>{post.title}</h1>
+        <div>
+            <h1>{post.title}</h1>
+        </div>
     )
 }
 
