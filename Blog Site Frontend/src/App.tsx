@@ -18,9 +18,9 @@ const App = () => {
 
   return (
     <>
-      <Outlet context={{ blogPosts }} />
+      <Outlet context={{ blogPosts } }  />
     </>
-  )
-}
+  );
+};
 
 export default App
