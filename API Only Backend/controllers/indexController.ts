@@ -1,11 +1,8 @@
 import bcrypt from "bcryptjs";
 import { body, validationResult, matchedData } from "express-validator";
 import prisma from "../lib/prisma.js";
-import passport from "passport";
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { Strategy as JWTStrategy } from "passport-jwt";
-import { ExtractJwt as ExtractJwt } from "passport-jwt";
 import z, { number } from "zod";
 
 const emailLengthErr = "must be between 1 and 50 characters";
