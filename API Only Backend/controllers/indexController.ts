@@ -8,8 +8,6 @@ import { Strategy as JWTStrategy } from "passport-jwt";
 import { ExtractJwt as ExtractJwt } from "passport-jwt";
 import z, { number } from "zod";
 
-
-
 const emailLengthErr = "must be between 1 and 50 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
 const passwordAlphaNumericErr = "must contain at least a letter and a number";
@@ -19,27 +17,6 @@ const userSchema = z.object({
   username: z.string(),
   password: z.string(),
 });
-
-// const opts = {}
-// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-// opts.secretOrKey = 'secret';
-
-// passport.use(
-//   new JWTStrategy(opts function(jwt_payload, done) {
-
-//     User.findOne({id: jwt_payload.sub}, function(err, user) {
-//       if (err) {
-//         return done(err, false);
-//       }
-//       if (user) {
-//         return done(null, user);
-//       } else {
-//         return done(null, false);
-//         // or you could create a new account
-//     })
-
-//   }),
-// );
 
 const createPostBodySchema = z.object({
   //parses the object to the schema, narrowing the types that are allowed
