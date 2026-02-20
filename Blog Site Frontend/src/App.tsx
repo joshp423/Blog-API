@@ -4,6 +4,7 @@ import './App.css'
 
 const App = () => {
   const [blogPosts, setBlogPosts] = useState(null);
+  const [loginStatus, setLoginStatus] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:3000/blogPosts/view')
@@ -13,12 +14,11 @@ const App = () => {
         console.log(data);
       })
     .catch((error) => console.error(error))
-
   }, []);
 
   return (
     <>
-      <Outlet context={{ blogPosts } }  />
+      <Outlet context={{ blogPosts, loginStatus }}  />
     </>
   );
 };
