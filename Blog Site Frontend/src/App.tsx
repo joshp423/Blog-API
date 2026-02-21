@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import Nav from './components/Nav/nav';
+import Login from './components/Login/login';
 import './App.css'
+import { type blogPost } from './types/blogPosts';
 
 const App = () => {
-  const [blogPosts, setBlogPosts] = useState(null);
-  const [loginStatus, setLoginStatus] = useState(false);
+  const [blogPosts, setBlogPosts] = useState<blogPost[] | null>(null);
+  const [loginStatus, setLoginStatus] = useState<boolean>(false);
+  const [display, setDisplay] = useState<string>("none");
 
   useEffect(() => {
     fetch('http://localhost:3000/blogPosts/view')
       .then((response) => response.json())
       .then((data) => {
-        setBlogPosts(data);
+        setBlogPosts(data.blogPosts);
         console.log(data);
       })
     .catch((error) => console.error(error))
@@ -18,7 +22,9 @@ const App = () => {
 
   return (
     <>
-      <Outlet context={{ blogPosts, loginStatus }}  />
+      <Nav loginStatus={loginStatus} setDisplay={setDisplay} display={display} />
+      <Login setLoginStatus={setLoginStatus} display={display}/>
+      <Outlet context={{ blogPosts: blogPosts ?? [] }}  />
     </>
   );
 };

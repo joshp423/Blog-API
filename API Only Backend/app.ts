@@ -1,8 +1,12 @@
 import "dotenv/config";
 import express from "express";
 import indexRouter from "./routes/indexRouter.js";
-const app = express();
 import path from "node:path";
+import cors from 'cors'
+const app = express();
+
+// Adds headers: Access-Control-Allow-Origin: *
+app.use(cors())
 
 import { fileURLToPath } from "url";
 
