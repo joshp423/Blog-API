@@ -19,7 +19,7 @@ const createPostBodySchema = z.object({
   //parses the object to the schema, narrowing the types that are allowed
   title: z.string(),
   text: z.string(),
-  published: z.boolean()
+  published: z.boolean(),
 });
 
 const editPostBodySchema = z.object({
@@ -27,14 +27,14 @@ const editPostBodySchema = z.object({
   id: z.int(),
   title: z.string(),
   text: z.string(),
-})
+});
 
 const createCommentBodySchema = z.object({
   //parses the object to the schema, narrowing the types that are allowed
   text: z.string(),
   userid: z.int(),
   postid: z.int(),
-})
+});
 
 const validateSignUp = [
   body("username")
@@ -73,9 +73,11 @@ export const signUp = [
   },
 ];
 
-
-export async function logInView(req: Request, res: Response, next: NextFunction) {
-
+export async function logInView(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const user = {
     username: req.body["username"],
     password: req.body["password"],
@@ -102,21 +104,32 @@ export async function logInView(req: Request, res: Response, next: NextFunction)
     if (!match) {
       return res.status(400).json({ message: "Incorrect password" });
     }
-    jwt.sign({ user }, "secretKey", { expiresIn: "30s" }, function(err, token) {
-      if (err || !token) {
-        //need to account for an error or no token
-        return res.status(500).json({ message: "Token generation failed" });
-      }
-      return res.json({ token }).json({ message: "succesfully logged in" }).json({ userCheck });
-    });
+    jwt.sign(
+      { user },
+      "secretKey",
+      { expiresIn: "30s" },
+      function (err, token) {
+        if (err || !token) {
+          //need to account for an error or no token
+          return res.status(500).json({ message: "Token generation failed" });
+        }
+        return res
+          .json({ token })
+          .json({ message: "succesfully logged in" })
+          .json({ userCheck });
+      },
+    );
   } catch (err) {
     res.sendStatus(500);
     return err;
   }
 }
 
-export async function logInEdit(req: Request, res: Response, next: NextFunction) {
-
+export async function logInEdit(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const user = {
     username: req.body["username"],
     password: req.body["password"],
@@ -144,32 +157,41 @@ export async function logInEdit(req: Request, res: Response, next: NextFunction)
     if (!match) {
       return res.status(400).json({ message: "Incorrect password" });
     }
-
-    
 
     if (!userCheck.editor) {
       return res.status(401).json({ message: "Unauthorised to edit" });
     }
 
-    jwt.sign({ user }, "secretKey", { expiresIn: "30s" }, function(err, token) {
-      if (err || !token) {
-        //need to account for an error or no token
-        return res.status(500).json({ message: "Token generation failed" });
-      }
-      return res.json({ token }).json({ message: "succesfully logged in" }).json({ userCheck });;
-    });
+    jwt.sign(
+      { user },
+      "secretKey",
+      { expiresIn: "30s" },
+      function (err, token) {
+        if (err || !token) {
+          //need to account for an error or no token
+          return res.status(500).json({ message: "Token generation failed" });
+        }
+        return res
+          .json({ token })
+          .json({ message: "succesfully logged in" })
+          .json({ userCheck });
+      },
+    );
   } catch (err) {
     res.sendStatus(500);
     return err;
   }
 }
 
-
 interface AuthRequest extends Request {
   token?: string;
 }
 
-export function verifyToken(req: AuthRequest, res: Response, next: NextFunction) {
+export function verifyToken(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction,
+) {
   // Get auth header value
   const bearerHeader = req.headers["authorization"];
   // Check if bearer is undefined
@@ -192,10 +214,7 @@ export function verifyToken(req: AuthRequest, res: Response, next: NextFunction)
   }
 }
 
-export async function getAllBlogPosts(
-  req: Request,
-  res: Response,
-) {
+export async function getAllBlogPosts(req: Request, res: Response) {
   const blogPosts = await prisma.posts.findMany({
     orderBy: {
       id: "desc",
@@ -207,10 +226,7 @@ export async function getAllBlogPosts(
   return;
 }
 
-export async function getSelectedBlogPost(
-  req: Request,
-  res: Response,
-) {
+export async function getSelectedBlogPost(req: Request, res: Response) {
   const blogPost = await prisma.posts.findUnique({
     where: {
       id: Number(req.body["blogpostId"]),
@@ -222,13 +238,9 @@ export async function getSelectedBlogPost(
   return;
 }
 
-export async function createNewBlogPost(
-  req: Request,
-  res: Response,
-) {
+export async function createNewBlogPost(req: Request, res: Response) {
   try {
-    
-    const { title, text, published } = createPostBodySchema.parse(req.body)
+    const { title, text, published } = createPostBodySchema.parse(req.body);
 
     if (!title || !text) {
       return res.status(400).json({ message: "Missing fields" });
@@ -244,19 +256,14 @@ export async function createNewBlogPost(
     });
 
     return res.status(201).json(post);
-
   } catch (error) {
     return res.status(400).json({ error });
   }
 }
 
-export async function editSelectedBlogPost(
-  req: Request,
-  res: Response,
-) {
+export async function editSelectedBlogPost(req: Request, res: Response) {
   try {
-    
-    const { id, title, text } = editPostBodySchema.parse(req.body)
+    const { id, title, text } = editPostBodySchema.parse(req.body);
 
     const updatedPost = await prisma.posts.update({
       where: { id },
@@ -266,8 +273,7 @@ export async function editSelectedBlogPost(
       },
     });
 
-  return res.status(201).json(updatedPost);
-
+    return res.status(201).json(updatedPost);
   } catch (error) {
     return res.status(400).json({ error });
   }
@@ -278,8 +284,7 @@ export async function togglePublishSelectedBlogPost(
   res: Response,
 ) {
   try {
-    
-    const id = Number(req.body['id'])
+    const id = Number(req.body["id"]);
 
     const selectedPost = await prisma.posts.findUnique({
       where: {
@@ -293,55 +298,41 @@ export async function togglePublishSelectedBlogPost(
       updatedPost = await prisma.posts.update({
         where: { id },
         data: {
-          published: false
+          published: false,
         },
       });
-    }
-    else {
+    } else {
       updatedPost = await prisma.posts.update({
         where: { id },
         data: {
-          published: true
+          published: true,
         },
       });
     }
     return res.status(201).json(updatedPost);
-
   } catch (error) {
     return res.status(400).json({ error });
   }
 }
 
-
-
-export async function deleteSelectedBlogPost(
-  req: Request,
-  res: Response,
-) {
+export async function deleteSelectedBlogPost(req: Request, res: Response) {
   try {
-    
-    const id = Number(req.body['id'])
+    const id = Number(req.body["id"]);
 
     if (!id) {
       return res.status(400).json({ message: "Missing fields" });
     }
 
-    const deletedPost = await prisma.posts.delete({where: { id } });
+    const deletedPost = await prisma.posts.delete({ where: { id } });
 
     return res.status(200).json(deletedPost);
-
   } catch (error) {
     return res.status(400).json({ error });
   }
 }
 
-
-export async function getAllComments (
-  req: Request,
-  res: Response,
-) {
-
-  const { postid } = createCommentBodySchema.parse(req.body)
+export async function getAllComments(req: Request, res: Response) {
+  const { postid } = createCommentBodySchema.parse(req.body);
 
   const comments = await prisma.comments.findMany({
     where: { postid },
@@ -355,13 +346,9 @@ export async function getAllComments (
   return;
 }
 
-export async function createNewComment(
-  req: Request,
-  res: Response,
-) {
+export async function createNewComment(req: Request, res: Response) {
   try {
-    
-    const { text, userid, postid } = createCommentBodySchema.parse(req.body)
+    const { text, userid, postid } = createCommentBodySchema.parse(req.body);
 
     if (!postid || !text) {
       return res.status(400).json({ message: "Missing fields" });
@@ -376,8 +363,7 @@ export async function createNewComment(
       },
     });
 
-    return res.status(201).json( comment );
-
+    return res.status(201).json(comment);
   } catch (error) {
     return res.status(400).json({ error });
   }
