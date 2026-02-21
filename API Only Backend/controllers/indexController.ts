@@ -3,7 +3,7 @@ import { body, validationResult, matchedData } from "express-validator";
 import prisma from "../lib/prisma.js";
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import z, { number } from "zod";
+import z from "zod";
 
 const emailLengthErr = "must be between 1 and 50 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
