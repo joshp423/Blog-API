@@ -1,4 +1,5 @@
 import App from './App';
+import BlogPost from './components/Homepage/BlogPost/blogPost';
 import Homepage from './components/Homepage/homepage';
 import Signup from './components/Signup/signUp';
 
@@ -9,6 +10,7 @@ const routes = [
     children: [
       { index: true, element: <Homepage /> },
       { path: 'sign-up', element: <Signup /> },
+      { path: 'posts/:postId', element: <BlogPost />}
     ],
   },
 ];

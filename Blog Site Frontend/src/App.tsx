@@ -22,7 +22,7 @@ const App = () => {
 
   return (
     <>
-      <Nav loginStatus={loginStatus} setDisplay={setDisplay} display={display} />
+      <Nav loginStatus={loginStatus} setDisplay={setDisplay} display={display} setLoginStatus={setLoginStatus} />
       <Login setLoginStatus={setLoginStatus} display={display} setDisplay={setDisplay}/>
       <Outlet context={{ blogPosts: blogPosts }}  />
     </>
