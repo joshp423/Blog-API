@@ -67,7 +67,7 @@ export const signUp = [
       });
       return res.status(201).json({ message: "Successful Sign-Up" });
     } catch (error) {
-      console.error(error);
+      res.status(400).json({ errors: errors.array() });
       next(error);
     }
   },
@@ -76,7 +76,6 @@ export const signUp = [
 export async function logInView(
   req: Request,
   res: Response,
-  next: NextFunction,
 ) {
   const user = {
     username: req.body["username"],
@@ -104,9 +103,16 @@ export async function logInView(
     if (!match) {
       return res.status(400).json({ message: "Incorrect password" });
     }
+
+    const secret = process.env.JWT_SECRET;
+
+    if (!secret) {
+      throw new Error("JWT secret is not defined")
+    }
+
     jwt.sign(
-      { user },
-      "secretKey",
+      { id: userCheck.id, username: userCheck.username },
+      secret,
       { expiresIn: "30s" },
       function (err, token) {
         if (err || !token) {
@@ -114,9 +120,10 @@ export async function logInView(
           return res.status(500).json({ message: "Token generation failed" });
         }
         return res
-          .json({ token })
-          .json({ message: "succesfully logged in" })
-          .json({ userCheck });
+          .json({  
+            message: "Successfully logged in",
+            token,
+          })
       },
     );
   } catch (err) {
@@ -128,7 +135,6 @@ export async function logInView(
 export async function logInEdit(
   req: Request,
   res: Response,
-  next: NextFunction,
 ) {
   const user = {
     username: req.body["username"],
@@ -161,10 +167,15 @@ export async function logInEdit(
     if (!userCheck.editor) {
       return res.status(401).json({ message: "Unauthorised to edit" });
     }
+    const secret = process.env.JWT_SECRET;
+
+    if (!secret) {
+      throw new Error("JWT secret is not defined")
+    }
 
     jwt.sign(
-      { user },
-      "secretKey",
+      { id: userCheck.id, username: userCheck.username },
+      secret,
       { expiresIn: "30s" },
       function (err, token) {
         if (err || !token) {
@@ -172,9 +183,10 @@ export async function logInEdit(
           return res.status(500).json({ message: "Token generation failed" });
         }
         return res
-          .json({ token })
-          .json({ message: "succesfully logged in" })
-          .json({ userCheck });
+          .json({  
+            message: "Successfully logged in",
+            token,
+          })
       },
     );
   } catch (err) {

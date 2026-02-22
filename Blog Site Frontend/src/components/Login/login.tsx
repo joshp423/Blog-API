@@ -1,11 +1,17 @@
 import { useState, type SyntheticEvent } from "react";
+import { type Dispatch, type SetStateAction } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faX } from '@fortawesome/free-solid-svg-icons'
+
+
 
 type LoginProps = {
     setLoginStatus: (status: boolean) => void, //function that takes a boolean and doesnt return anything
+    setDisplay: Dispatch<SetStateAction<string>>
     display: string
 }
 
-function Login({setLoginStatus, display}: LoginProps) {
+function Login({setLoginStatus, setDisplay, display}: LoginProps) {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -18,16 +24,18 @@ function Login({setLoginStatus, display}: LoginProps) {
             },
             method: "POST",
             body:
-                JSON.stringify(({ username, password}))
+                JSON.stringify({ username, password })
         })
         .then((response) => response.json())
         .then((data) => {
-            if (data.message === "succesfully logged in") {
+            if (data.message === "Successfully logged in") {
                 localStorage.setItem("token", data.token);
-                console.log(data.userCheck);
+                
                 setLoginStatus(true);
+                console.log(data.message);
+                setDisplay("none");
             } else {
-                console.log("Login failed:", data.message);
+                console.log(data.message);
             }
         })
         .catch((error) => console.error(error))
@@ -39,8 +47,9 @@ function Login({setLoginStatus, display}: LoginProps) {
             <form onSubmit={logInAPI}>
                 <input type="text" placeholder="username" onChange={e => setUsername(e.target.value)}/>
                 <input type="password" placeholder="password" onChange={e => setPassword(e.target.value)}/>
-                <button type="submit" ></button>
+                <button type="submit">Submit</button>
             </form>
+            <a onClick={() => setDisplay("none")}><FontAwesomeIcon icon={faX} /></a>
         </div>
     )
 }

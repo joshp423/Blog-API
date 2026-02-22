@@ -6,7 +6,7 @@ import './App.css'
 import { type blogPost } from './types/blogPosts';
 
 const App = () => {
-  const [blogPosts, setBlogPosts] = useState<blogPost[] | null>(null);
+  const [blogPosts, setBlogPosts] = useState<blogPost[]>([]);
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
   const [display, setDisplay] = useState<string>("none");
 
@@ -23,8 +23,8 @@ const App = () => {
   return (
     <>
       <Nav loginStatus={loginStatus} setDisplay={setDisplay} display={display} />
-      <Login setLoginStatus={setLoginStatus} display={display}/>
-      <Outlet context={{ blogPosts: blogPosts ?? [] }}  />
+      <Login setLoginStatus={setLoginStatus} display={display} setDisplay={setDisplay}/>
+      <Outlet context={{ blogPosts: blogPosts }}  />
     </>
   );
 };

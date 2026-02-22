@@ -23,7 +23,7 @@ function Nav({display, setDisplay, loginStatus}: NavProps) {
                         <Link to="/">Home</Link>
                     </h3>
                     <h3>
-                        <button  >LogOut</button>
+                        <button>LogOut</button>
                     </h3>
                 </div>
             </div>
@@ -41,6 +41,9 @@ function Nav({display, setDisplay, loginStatus}: NavProps) {
                 </h3>
                 <h3>
                     <button onClick={showLoginForm} style={{display: display === "none" ? "flex" : "none"}}>Log In</button>
+                </h3>
+                <h3>
+                    <Link to='sign-up'>Sign Up</Link>
                 </h3>
             </div>
         </div>
