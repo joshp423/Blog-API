@@ -2,7 +2,7 @@ interface comment {
     id: number,
     timeposted: Date,
     postid: number,
-    userid: number,
+    username: string,
     text: string,
 }
 

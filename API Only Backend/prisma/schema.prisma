@@ -35,7 +35,7 @@ model Comments {
   timeposted DateTime
   post Posts @relation(fields: [postid], references: [id])
   postid Int
-  user User @relation(fields: [userid], references: [id])
-  userid Int
+  user User @relation(fields: [username], references: [username])
+  username String
 }
 

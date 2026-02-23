@@ -32,7 +32,7 @@ const editPostBodySchema = z.object({
 const createCommentBodySchema = z.object({
   //parses the object to the schema, narrowing the types that are allowed
   text: z.string(),
-  userid: z.int(),
+  username: z.string(),
   postid: z.int(),
 });
 
@@ -125,7 +125,7 @@ export async function logInView(
           .json({  
             message: "Successfully logged in",
             token,
-            id: userCheck.id
+            username: userCheck.username
           
           })
       },
@@ -367,7 +367,7 @@ export async function getAllComments(req: Request, res: Response) {
 
 export async function createNewComment(req: Request, res: Response) {
   try {
-    const { text, userid, postid } = createCommentBodySchema.parse(req.body);
+    const { text, username, postid } = createCommentBodySchema.parse(req.body);
 
     if (!postid || !text) {
       return res.status(400).json({ message: "Missing fields" });
@@ -376,7 +376,7 @@ export async function createNewComment(req: Request, res: Response) {
     const comment = await prisma.comments.create({
       data: {
         text,
-        userid,
+        username,
         postid,
         timeposted: new Date(),
       },

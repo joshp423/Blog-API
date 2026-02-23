@@ -5,11 +5,8 @@ type BlogPostOverviewProps = {
     post: blogPost;
 }
 
-
 // change strings to cut off text
 function BlogPostOverview({ post }: BlogPostOverviewProps) {
-
-    
 
     function goToPost() {
         navigate(`posts/${post.id}`, {
@@ -19,11 +16,14 @@ function BlogPostOverview({ post }: BlogPostOverviewProps) {
 
     const navigate = useNavigate();
     if (post.published === true) {
+
+        const postDate = new Date(post.timeposted)
+        const date = postDate.toLocaleDateString();
+        const time = postDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',  hour12: true });
         return(
         <div className="blogPostOverview">
             <h1>{post.title}</h1>
-            <p>Posted at {String(post.timeposted)}</p>
-            <p>comment amount</p>
+            <p>{time} - {date}</p>
             <button onClick={goToPost}>See Post</button>
         </div>
         )

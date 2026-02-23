@@ -7,7 +7,9 @@ import { type blogPost } from './types/blogPosts';
 
 const App = () => {
   const [blogPosts, setBlogPosts] = useState<blogPost[]>([]);
-  const [loginStatus, setLoginStatus] = useState<boolean>(false);
+  const [loginStatus, setLoginStatus] = useState<boolean>(
+    () => Boolean(sessionStorage.getItem("loggedUser"))
+  );
   const [display, setDisplay] = useState<string>("none");
 
   useEffect(() => {

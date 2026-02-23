@@ -15,7 +15,7 @@ function Nav({display, setDisplay, loginStatus, setLoginStatus}: NavProps) {
 
     const logOut = () => {
         setLoginStatus(false);
-        localStorage.clear();
+        sessionStorage.clear();
     }
 
     if (loginStatus) {
