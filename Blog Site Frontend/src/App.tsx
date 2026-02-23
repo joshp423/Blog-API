@@ -24,7 +24,7 @@ const App = () => {
     <>
       <Nav loginStatus={loginStatus} setDisplay={setDisplay} display={display} setLoginStatus={setLoginStatus} />
       <Login setLoginStatus={setLoginStatus} display={display} setDisplay={setDisplay}/>
-      <Outlet context={{ blogPosts: blogPosts }}  />
+      <Outlet context={{ blogPosts: blogPosts, loginStatus: loginStatus }}  />
     </>
   );
 };

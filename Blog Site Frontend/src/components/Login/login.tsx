@@ -30,9 +30,9 @@ function Login({setLoginStatus, setDisplay, display}: LoginProps) {
         .then((data) => {
             if (data.message === "Successfully logged in") {
                 localStorage.setItem("token", data.token);
-                
+                localStorage.setItem("userId", data.id)
                 setLoginStatus(true);
-                console.log(data.message);
+                console.log(data.message, data.id);
                 setDisplay("none");
             } else {
                 console.log(data.message);

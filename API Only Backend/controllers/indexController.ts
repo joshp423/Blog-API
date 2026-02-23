@@ -125,6 +125,8 @@ export async function logInView(
           .json({  
             message: "Successfully logged in",
             token,
+            id: userCheck.id
+          
           })
       },
     );
@@ -349,7 +351,7 @@ export async function deleteSelectedBlogPost(req: Request, res: Response) {
 }
 
 export async function getAllComments(req: Request, res: Response) {
-  const { postid } = createCommentBodySchema.parse(req.body);
+  const postid = Number(req.body["postId"]);
 
   const comments = await prisma.comments.findMany({
     where: { postid },

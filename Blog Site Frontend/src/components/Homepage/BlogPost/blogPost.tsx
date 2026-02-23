@@ -1,11 +1,21 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { blogPost } from "../../../types/blogPosts";
+import type { comment } from "../../../types/commentType";
+import Comment from "./Comments/comments";
+import { useOutletContext } from 'react-router-dom';
+import AddCommentForm from "./Comments/addCommentForm";
+
+type OutletContextType = {
+    loginStatus: boolean
+}
 
 function BlogPost() {
     const { postId } = useParams();
     const navigate = useNavigate();
     const [post, setPost] = useState<blogPost | null>(null);
+    const [comments, setComments] = useState<comment[] | null>([]);
+    const { loginStatus } = useOutletContext<OutletContextType>();
 
     useEffect(() => {
         async function fetchPost() {
@@ -20,22 +30,62 @@ function BlogPost() {
             const data = await response.json();
             console.log(data)
             setPost(data.blogPost);
+            return;
+        }
+        async function fetchComments() {
+            const response = await fetch('http://localhost:3000/comments/view/', {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body:
+                JSON.stringify({ postId: Number(postId) })
+            })
+            const data = await response.json();
+            console.log(data)
+            setComments(data.comments);
+            return;
         }
 
         fetchPost();
-    }, [postId]);
+        fetchComments();
+    }, [postId]); // dependency array
 
     if (!post) return <div>Loading...</div>;
 
+    if (loginStatus) {
+        return (
+            <div className="blogPostOverview">
+                <h1>{post.title}</h1>
+                <h1>{post.text}</h1>
+                <p>Posted at {String(post.timeposted)}</p>
+                <p>comment amount</p>
+                <div className="commentsSection">
+                    {comments?.map((comment:comment) => (
+                        <Comment key={comment.id} comment={comment}/>
+                    ))}
+                    <AddCommentForm  post={post}/>
+
+                </div>
+                <button onClick={() => navigate(-1)}>Back</button>
+            </div>
+        );
+    }
     return (
-        <div className="blogPostOverview">
-            <h1>{post.title}</h1>
-            <h1>{post.text}</h1>
-            <p>Posted at {String(post.timeposted)}</p>
-            <p>comment amount</p>
-            <button onClick={() => navigate(-1)}>Back</button>
-        </div>
-    );
+            <div className="blogPostOverview">
+                <h1>{post.title}</h1>
+                <h1>{post.text}</h1>
+                <p>Posted at {String(post.timeposted)}</p>
+                <p>comment amount</p>
+                <div className="commentsSection">
+                    {comments?.map((comment:comment) => (
+                        <Comment key={comment.id} comment={comment}/>
+                    ))}
+                </div>
+                <button onClick={() => navigate(-1)}>Back</button>
+            </div>
+        );
+    
 }
 
 export default BlogPost;

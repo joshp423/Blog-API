@@ -29,7 +29,7 @@ indexRouter.delete(
 );
 indexRouter.post("/comments/view", indexController.getAllComments);
 indexRouter.post(
-  "/comments/view",
+  "/comments/new",
   indexController.verifyToken,
   indexController.createNewComment,
 );
