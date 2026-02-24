@@ -1,6 +1,7 @@
 import BlogPostOverview from "./BlogPost/blogPostOverview";
 import type { blogPost } from "../../types/blogPosts";
 import { useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Signup from "../Signup/signUp";
 
 type OutletContextType = {
@@ -14,6 +15,7 @@ function Homepage() {
   if (loginStatus) {
     return (
       <div className="hpMain">
+        <Link to="/new-post"></Link>
         <div className="blogContent">
           {blogPosts?.map((post) => (
             <BlogPostOverview key={post.id} post={post} />
@@ -25,6 +27,7 @@ function Homepage() {
   return (
     <div className="hpMainNLI">
       <h1>Blog Post Editor</h1>
+      <h3>Please log in or sign up to access editor</h3>
       <Signup />
     </div>
   )

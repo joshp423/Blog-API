@@ -1,4 +1,5 @@
 import type { comment } from "../../../../types/commentType";
+import DeleteCommentButton from "./deleteCommentButton";
 
 type CommentProps = {
   comment: comment;
@@ -19,6 +20,7 @@ function Comment({ comment }: CommentProps) {
       <p>
         {time} - {date}
       </p>
+      <DeleteCommentButton comment={comment} />
     </div>
   );
 }

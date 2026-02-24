@@ -4,7 +4,6 @@ import type { blogPost } from "../../../types/blogPosts";
 import type { comment } from "../../../types/commentType";
 import Comment from "./Comments/comments";
 import { useOutletContext } from "react-router-dom";
-import EditCommentForm from "./Comments/editCommentForm";
 
 type OutletContextType = {
   loginStatus: boolean;
@@ -72,28 +71,12 @@ function BlogPost() {
           {comments?.map((comment: comment) => (
             <Comment key={comment.id} comment={comment} />
           ))}
-          <EditCommentForm post={post}  />
         </div>
         <button onClick={() => navigate(-1)}>Back</button>
       </div>
     );
   }
-  return (
-    <div className="blogPostOverview">
-      <h1>{post.title}</h1>
-      <h1>{post.text}</h1>
-      <p>
-        {time} - {date}
-      </p>
-      <div className="commentsSection">
-        <h2>Comments:</h2>
-        {comments?.map((comment: comment) => (
-          <Comment key={comment.id} comment={comment} />
-        ))}
-      </div>
-      <button onClick={() => navigate(-1)}>Back</button>
-    </div>
-  );
 }
+    
 
-export default BlogPost;
+export default BlogPost
