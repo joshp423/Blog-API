@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import Nav from "./components/Nav/nav";
 import Login from "./components/Login/login";
 import { type blogPost } from "./types/blogPosts";
-
 import "./App.css";
 
 function App() {
@@ -10,6 +10,9 @@ function App() {
   const [loginStatus, setLoginStatus] = useState<boolean>(() =>
     Boolean(sessionStorage.getItem("loggedUser")),
   );
+
+  const [display, setDisplay] = useState<string>("none");
+
 
   useEffect(() => {
     fetch("http://localhost:3000/blogPosts/view")

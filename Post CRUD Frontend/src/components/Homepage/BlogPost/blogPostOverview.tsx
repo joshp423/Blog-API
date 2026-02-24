@@ -1,4 +1,4 @@
-import type { blogPost } from "../../types/blogPosts";
+import type { blogPost } from "../../../types/blogPosts";
 import { useNavigate } from "react-router-dom";
 
 type BlogPostOverviewProps = {
