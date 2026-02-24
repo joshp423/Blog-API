@@ -3,93 +3,98 @@ import { useEffect, useState } from "react";
 import type { blogPost } from "../../../types/blogPosts";
 import type { comment } from "../../../types/commentType";
 import Comment from "./Comments/comments";
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext } from "react-router-dom";
 import AddCommentForm from "./Comments/addCommentForm";
 
 type OutletContextType = {
-    loginStatus: boolean
-}
+  loginStatus: boolean;
+};
 
 function BlogPost() {
-    const { postId } = useParams();
-    const navigate = useNavigate();
-    const [post, setPost] = useState<blogPost | null>(null);
-    const [comments, setComments] = useState<comment[]>([]);
-    const { loginStatus } = useOutletContext<OutletContextType>();
+  const { postId } = useParams();
+  const navigate = useNavigate();
+  const [post, setPost] = useState<blogPost | null>(null);
+  const [comments, setComments] = useState<comment[]>([]);
+  const { loginStatus } = useOutletContext<OutletContextType>();
 
-    async function fetchComments() {
-        const response = await fetch('http://localhost:3000/comments/view/', {
+  async function fetchComments() {
+    const response = await fetch("http://localhost:3000/comments/view/", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ postId: Number(postId) }),
+    });
+    const data = await response.json();
+    console.log(data);
+    setComments(data.comments);
+    return;
+  }
+
+  useEffect(() => {
+    async function fetchPost() {
+      const response = await fetch("http://localhost:3000/blogPosts/view/", {
         headers: {
-            "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         method: "POST",
-        body:
-            JSON.stringify({ postId: Number(postId) })
-        })
-        const data = await response.json();
-        console.log(data)
-        setComments(data.comments);
-        return;
+        body: JSON.stringify({ blogpostId: Number(postId) }),
+      });
+      const data = await response.json();
+      console.log(data);
+      setPost(data.blogPost);
+      return;
     }
 
-    useEffect(() => {
-        async function fetchPost() {
-            const response = await fetch('http://localhost:3000/blogPosts/view/', {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "POST",
-            body:
-                JSON.stringify({ blogpostId: Number(postId) })
-            })
-            const data = await response.json();
-            console.log(data)
-            setPost(data.blogPost);
-            return;
-        }
-        
-        fetchPost();
-        fetchComments();
-    }, [postId]); // dependency array
+    fetchPost();
+    fetchComments();
+  }, [postId]); // dependency array
 
-    if (!post) return <div>Loading...</div>;
+  if (!post) return <div>Loading...</div>;
 
-    const postDate = new Date(post.timeposted)
-    const date = postDate.toLocaleDateString();
-    const time = postDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit',  hour12: true });
+  const postDate = new Date(post.timeposted);
+  const date = postDate.toLocaleDateString();
+  const time = postDate.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 
-    if (loginStatus) {
-        return (
-            <div className="blogPostOverview">
-                <h1>{post.title}</h1>
-                <h1>{post.text}</h1>
-                <p>{time} - {date}</p>
-                <div className="commentsSection">
-                    <h2>Comments:</h2>
-                    {comments?.map((comment:comment) => (
-                        <Comment key={comment.id} comment={comment}/>
-                    ))}
-                    <AddCommentForm  post={post} onCommentAdd={fetchComments}/>
-                </div>
-                <button onClick={() => navigate(-1)}>Back</button>
-            </div>
-        );
-    }
+  if (loginStatus) {
     return (
-            <div className="blogPostOverview">
-                <h1>{post.title}</h1>
-                <h1>{post.text}</h1>
-                <p>{time} - {date}</p>
-                <div className="commentsSection">
-                    <h2>Comments:</h2>
-                    {comments?.map((comment:comment) => (
-                        <Comment key={comment.id} comment={comment}/>
-                    ))}
-                </div>
-                <button onClick={() => navigate(-1)}>Back</button>
-            </div>
-        );
-    
+      <div className="blogPostOverview">
+        <h1>{post.title}</h1>
+        <h1>{post.text}</h1>
+        <p>
+          {time} - {date}
+        </p>
+        <div className="commentsSection">
+          <h2>Comments:</h2>
+          {comments?.map((comment: comment) => (
+            <Comment key={comment.id} comment={comment} />
+          ))}
+          <AddCommentForm post={post} onCommentAdd={fetchComments} />
+        </div>
+        <button onClick={() => navigate(-1)}>Back</button>
+      </div>
+    );
+  }
+  return (
+    <div className="blogPostOverview">
+      <h1>{post.title}</h1>
+      <h1>{post.text}</h1>
+      <p>
+        {time} - {date}
+      </p>
+      <div className="commentsSection">
+        <h2>Comments:</h2>
+        {comments?.map((comment: comment) => (
+          <Comment key={comment.id} comment={comment} />
+        ))}
+      </div>
+      <button onClick={() => navigate(-1)}>Back</button>
+    </div>
+  );
 }
 
 export default BlogPost;

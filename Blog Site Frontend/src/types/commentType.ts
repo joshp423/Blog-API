@@ -1,9 +1,9 @@
 interface comment {
-    id: number,
-    timeposted: Date,
-    postid: number,
-    username: string,
-    text: string,
+  id: number;
+  timeposted: Date;
+  postid: number;
+  username: string;
+  text: string;
 }
 
-export type { comment }
+export type { comment };
