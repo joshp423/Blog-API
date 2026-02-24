@@ -12,7 +12,7 @@ function AddCommentForm({ post, onCommentAdd }: AddCommentFormProps) {
     async function newCommentAPI(e: SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        console.log(newCommentText, localStorage.getItem("username"), post.id)
+        console.log(newCommentText, sessionStorage.getItem("username"), post.id)
         const rsp = await fetch('http://localhost:3000/comments/new', {
             headers: {
                 "Content-Type": "application/json",
@@ -22,7 +22,7 @@ function AddCommentForm({ post, onCommentAdd }: AddCommentFormProps) {
             body:
                 JSON.stringify({
                     text: newCommentText,
-                    username: localStorage.getItem("username"),
+                    username: sessionStorage.getItem("username"),
                     postid: post.id
                 })
         })

@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
+import Nav from './components/Nav/nav';
+import Login from './components/Login/login';
+import { type blogPost } from './types/blogPosts';
+
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [blogPosts, setBlogPosts] = useState<blogPost[]>([]);
+  const [loginStatus, setLoginStatus] = useState<boolean>(
+    () => Boolean(sessionStorage.getItem("loggedUser"))
+  );
+
+  useEffect(() => {
+    fetch('http://localhost:3000/blogPosts/view')
+      .then((response) => response.json())
+      .then((data) => {
+        setBlogPosts(data.blogPosts);
+        console.log(data);
+      })
+    .catch((error) => console.error(error))
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Nav loginStatus={loginStatus} setDisplay={setDisplay} display={display} setLoginStatus={setLoginStatus} />
+      <Login setLoginStatus={setLoginStatus} display={display} setDisplay={setDisplay}/>
+      <Outlet context={{ blogPosts: blogPosts, loginStatus: loginStatus }}  />
     </>
   )
 }
-
 export default App
