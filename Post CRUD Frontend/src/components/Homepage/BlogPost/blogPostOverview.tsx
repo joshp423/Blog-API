@@ -8,13 +8,13 @@ type BlogPostOverviewProps = {
 // change strings to cut off text
 function BlogPostOverview({ post }: BlogPostOverviewProps) {
   function goToPost() {
-    navigate(`posts/${post.id}`, {
+    navigate(`edit-post/${post.id}`, {
       state: { post },
     });
   }
+  console.log(post.published)
 
   const navigate = useNavigate();
-  if (post.published === true) {
     const postDate = new Date(post.timeposted);
     const date = postDate.toLocaleDateString();
     const time = postDate.toLocaleTimeString([], {
@@ -22,17 +22,15 @@ function BlogPostOverview({ post }: BlogPostOverviewProps) {
       minute: "2-digit",
       hour12: true,
     });
-    return (
-      <div className="blogPostOverview">
-        <h1>{post.title}</h1>
-        <p>
-          {time} - {date}
-        </p>
-        <button onClick={goToPost}>View and Edit Blog Post</button>
-      </div>
-    );
-  }
-  return;
+  return (
+    <div className="blogPostOverview">
+      <h1>{post.title}</h1>
+      <p>
+        {time} - {date}
+      </p>
+      <button onClick={goToPost}>View and Edit Blog Post</button>
+    </div>
+  );
+  
 }
-
 export default BlogPostOverview;

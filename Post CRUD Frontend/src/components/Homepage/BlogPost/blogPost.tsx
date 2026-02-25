@@ -16,6 +16,12 @@ function BlogPost() {
   const [comments, setComments] = useState<comment[]>([]);
   const { loginStatus } = useOutletContext<OutletContextType>();
 
+  function editPost() {
+    navigate(`edit-post/${post.id}`, {
+      state: { post },
+    });
+  }
+
   useEffect(() => {
     async function fetchPost() {
       const response = await fetch("http://localhost:3000/blogPosts/view/", {
@@ -66,6 +72,9 @@ function BlogPost() {
         <p>
           {time} - {date}
         </p>
+      <div className="blogPostEditDelete">
+        <button>Edit Button</button>
+      </div>
         <div className="commentsSection">
           <h2>Comments:</h2>
           {comments?.map((comment: comment) => (

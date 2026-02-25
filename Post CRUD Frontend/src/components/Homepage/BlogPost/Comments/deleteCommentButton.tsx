@@ -18,6 +18,7 @@ function DeleteCommentButton({ comment }: deleteCommentButtonProps) {
     if (rsp.status != 201) {
       return console.log(rsp.body);
     }
+    
   }
   return (
     <div className="addCommentForm">
