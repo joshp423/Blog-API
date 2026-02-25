@@ -17,9 +17,7 @@ function BlogPost() {
   const { loginStatus } = useOutletContext<OutletContextType>();
 
   function editPost() {
-    navigate(`edit-post/${post.id}`, {
-      state: { post },
-    });
+    navigate(`edit`);
   }
 
   useEffect(() => {
@@ -73,7 +71,7 @@ function BlogPost() {
           {time} - {date}
         </p>
       <div className="blogPostEditDelete">
-        <button>Edit Button</button>
+        <button onClick={editPost}>Edit Post</button>
       </div>
         <div className="commentsSection">
           <h2>Comments:</h2>

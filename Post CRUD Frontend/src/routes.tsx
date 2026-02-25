@@ -1,5 +1,6 @@
 import App from "./App";
 import BlogPost from "./components/Homepage/BlogPost/blogPost";
+import EditBlogPostPage from "./components/Homepage/BlogPost/editBlogPost";
 import Homepage from "./components/Homepage/homepage";
 import Signup from "./components/Signup/signUp";
 
@@ -10,7 +11,8 @@ const routes = [
     children: [
       { index: true, element: <Homepage /> },
       { path: "sign-up", element: <Signup /> },
-      { path: "edit-post/:postId", element: <BlogPost /> },
+      { path: "view-post/:postId", element: <BlogPost /> },
+      { path: "view-post/:postId/edit", element: <EditBlogPostPage/> },
     ],
   },
 ];

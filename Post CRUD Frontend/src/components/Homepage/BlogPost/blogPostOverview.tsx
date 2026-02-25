@@ -8,7 +8,7 @@ type BlogPostOverviewProps = {
 // change strings to cut off text
 function BlogPostOverview({ post }: BlogPostOverviewProps) {
   function goToPost() {
-    navigate(`edit-post/${post.id}`, {
+    navigate(`view-post/${post.id}`, {
       state: { post },
     });
   }
