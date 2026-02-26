@@ -66,7 +66,7 @@ function BlogPost() {
     return (
       <div className="blogPostOverview">
         <h1>{post.title}</h1>
-        <h1>{post.text}</h1>
+        <h2 dangerouslySetInnerHTML={{__html:post.text}}></h2>
         <p>
           {time} - {date}
         </p>

@@ -4,6 +4,7 @@ import prisma from "../lib/prisma.js";
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import z from "zod";
+import sanitizeHtml from "sanitize-html";
 
 const emailLengthErr = "must be between 1 and 50 characters";
 const lengthErrShort = "must be between 1 and 25 characters";
@@ -283,6 +284,14 @@ export async function createNewBlogPost(req: Request, res: Response) {
 export async function editSelectedBlogPost(req: Request, res: Response) {
   try {
     const { id, title, text } = editPostBodySchema.parse(req.body);
+
+    const cleanText = sanitizeHtml(text, {
+      allowedTags: ["b", "i", "strong", "em", "p", "ul", "li", "a"],
+      allowedAttributes: {
+        a: ["href"]
+      }
+    });
+  
 
     const updatedPost = await prisma.posts.update({
       where: { id },

@@ -8,9 +8,7 @@ type BlogPostOverviewProps = {
 // change strings to cut off text
 function BlogPostOverview({ post }: BlogPostOverviewProps) {
   function goToPost() {
-    navigate(`posts/${post.id}`, {
-      state: { post },
-    });
+    navigate(`posts/${post.id}`)
   }
 
   const navigate = useNavigate();

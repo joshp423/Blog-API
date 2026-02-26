@@ -1,17 +1,16 @@
-import { useRef } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
-import type { blogPost } from "../../../types/blogPosts";
+
 import { useParams } from 'react-router';
-import { useEffect, useState } from 'react';
-import {Editor as TinyMCEEditor} from "tinymce"; 
+import { useEffect, useState, useRef, type SyntheticEvent } from 'react';
+import BundledEditor from '../../../../BundledEditor.tsx'
+import type { Editor as TinyMCEEditor } from 'tinymce';
+import { useNavigate } from "react-router-dom";
 
 
 function EditBlogPostPage() {
 
-    
-    const [post, setPost] = useState<blogPost | null>(null);
     const { postId } = useParams();
-    const [content, setContent] = useState<string>("");
+    const navigate = useNavigate();
+    const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     useEffect(() => {
         async function fetchPost() {
@@ -24,41 +23,64 @@ function EditBlogPostPage() {
           });
           const data = await response.json();
           console.log(data);
-          setPost(data.blogPost);
-          setContent(data.blogPost.text);
+          setText(data.blogPost.text);
           setTitle(data.blogPost.title);
           return;
         }
         fetchPost();
     }, [postId])
+
     const editorRef = useRef<TinyMCEEditor | null>(null);
-    const log = () => {
-        if (editorRef.current) {
-        console.log(editorRef.current.getContent());
+
+    const updatePostAPI = async(e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!editorRef.current) return;
+
+        const rsp = await fetch(`http://localhost:3000/blogposts/edit`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+            method: "PUT",
+            body: JSON.stringify({
+                id: Number(postId),
+                text,
+                title,
+            }),
+        });
+        if (rsp.status != 201) {
+            const data = await rsp.json();
+            return console.log(data);
         }
+        navigate(`/view-post/${postId}`)
+        
     };
+
     return (
         <div className='blogPostEditor'>
-            <form action="">
-                <Editor
-                    onInit={(evt, editor) => editorRef.current = editor}
-                    value={post?.text || ""}
+            <form onSubmit={updatePostAPI}>
+                <label htmlFor="title">Title: </label>
+                <input type="text" value={title} id='title'onChange={(e) => setTitle(e.target.value)}/>
+                <BundledEditor
+                    onInit={(_: unknown, editor:TinyMCEEditor) => editorRef.current = editor}
+                    value={text}
                     init={{
-                        height: 500,
-                        menubar: false,
-                        plugins: [
-                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                            'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
-                        ],
-                        toolbar: 'undo redo | blocks | ' +
-                            'bold italic forecolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
+                    ],
+                    toolbar: 'undo redo | blocks | ' +
+                        'bold italic forecolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help',
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                     }}
+                    onEditorChange={(content) => setText(content)}
                 />
-                <button onClick={log}>Log editor content</button>
+                <button type="submit" >Update Post</button>
             </form>
         </div>
     );
