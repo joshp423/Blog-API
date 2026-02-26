@@ -13,7 +13,7 @@ const App = () => {
   const [display, setDisplay] = useState<string>("none");
 
   useEffect(() => {
-    fetch("http://localhost:3000/blogPosts/view")
+    fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view")
       .then((response) => response.json())
       .then((data) => {
         setBlogPosts(data.blogPosts);

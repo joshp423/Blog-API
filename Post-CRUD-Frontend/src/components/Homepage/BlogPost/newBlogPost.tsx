@@ -15,7 +15,7 @@ function NewBlogPostPage() {
     const [published, setPublished] = useState<boolean>(false)
     useEffect(() => {
         async function fetchPost() {
-          const response = await fetch("http://localhost:3000/blogPosts/view/", {
+          const response = await fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view/", {
             headers: {
               "Content-Type": "application/json",
             },
@@ -37,7 +37,7 @@ function NewBlogPostPage() {
         e.preventDefault();
         if (!editorRef.current) return;
 
-        const rsp = await fetch(`http://localhost:3000/blogPosts/create`, {
+        const rsp = await fetch(`https://blog-api-backend-jfv8.onrender.com/blogPosts/create`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${sessionStorage.getItem("token")}`,

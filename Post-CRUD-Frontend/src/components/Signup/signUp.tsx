@@ -11,7 +11,7 @@ function Signup() {
     e.preventDefault();
     // const apiUrl = import.meta.env.VITE_API_URL;
     console.log(import.meta.env);
-    const rsp = await fetch(`http://localhost:3000/sign-up`, {
+    const rsp = await fetch(`https://blog-api-backend-jfv8.onrender.com/sign-up`, {
       headers: {
         "Content-Type": "application/json",
       },

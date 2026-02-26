@@ -15,7 +15,7 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
 
   function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    fetch("http://localhost:3000/log-in/editor", {
+    fetch("https://blog-api-backend-jfv8.onrender.com/log-in/editor", {
       headers: {
         "Content-Type": "application/json",
       },

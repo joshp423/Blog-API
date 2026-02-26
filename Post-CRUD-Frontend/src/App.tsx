@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     async function getBlogPosts() {
-      const rsp = await fetch("http://localhost:3000/blogPosts/view", {
+      const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view", {
          headers: {
               "Content-Type": "application/json",
             },

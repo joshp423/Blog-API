@@ -13,7 +13,7 @@ function AddCommentForm({ post, onCommentAdd }: AddCommentFormProps) {
     e.preventDefault();
 
     console.log(newCommentText, sessionStorage.getItem("username"), post.id);
-    const rsp = await fetch("http://localhost:3000/comments/new", {
+    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/comments/new", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,

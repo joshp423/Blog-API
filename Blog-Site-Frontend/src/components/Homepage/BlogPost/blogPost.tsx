@@ -18,7 +18,7 @@ function BlogPost() {
   const { loginStatus } = useOutletContext<OutletContextType>();
 
   async function fetchComments() {
-    const response = await fetch("http://localhost:3000/comments/view/", {
+    const response = await fetch("https://blog-api-backend-jfv8.onrender.com/comments/view/", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -33,7 +33,7 @@ function BlogPost() {
 
   useEffect(() => {
     async function fetchPost() {
-      const response = await fetch("http://localhost:3000/blogPosts/view/", {
+      const response = await fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view/", {
         headers: {
           "Content-Type": "application/json",
         },

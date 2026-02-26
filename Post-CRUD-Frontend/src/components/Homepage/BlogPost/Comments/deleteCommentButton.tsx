@@ -5,7 +5,7 @@ type deleteCommentButtonProps = {
 //delete comment route needed
 function DeleteCommentButton({ comment }: deleteCommentButtonProps) {
   async function deleteCommentAPI() {
-    const rsp = await fetch("http://localhost:3000/comments/delete", {
+    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/comments/delete", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
