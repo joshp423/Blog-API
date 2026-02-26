@@ -21,11 +21,12 @@ function App() {
               "Content-Type": "application/json",
             },
             method: "GET",
-          })
-          const data = await response.json();
+          });
+          const data = await rsp.json();
           setBlogPosts(data.blogPosts);
-      })
-  }, [blogPosts.length]);
+      }
+      getBlogPosts()
+  });
 
   return (
     <>

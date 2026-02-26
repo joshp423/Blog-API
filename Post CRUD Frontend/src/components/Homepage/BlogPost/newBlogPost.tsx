@@ -12,6 +12,7 @@ function NewBlogPostPage() {
     const navigate = useNavigate();
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
+    const [published, setPublished] = useState<boolean>(false)
     useEffect(() => {
         async function fetchPost() {
           const response = await fetch("http://localhost:3000/blogPosts/view/", {
@@ -45,7 +46,7 @@ function NewBlogPostPage() {
             body: JSON.stringify({
                 text,
                 title,
-                published: Boolean(body.published)
+                published: published
             }),
         });
         if (rsp.status != 201) {
@@ -83,7 +84,7 @@ function NewBlogPostPage() {
                     onEditorChange={(content) => setText(content)}
                 />
                 <label htmlFor="published">Publish Post</label>
-                <input type="checkbox" name="published" id="published"/>
+                <input type="checkbox" name="published" id="published" onChange={(e) => setPublished(Boolean(e.target.value))}/>
                 <button type="submit" >Update Post</button>
             </form>
         </div>
