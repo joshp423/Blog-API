@@ -36,23 +36,23 @@ function NewBlogPostPage() {
         e.preventDefault();
         if (!editorRef.current) return;
 
-        const rsp = await fetch(`http://localhost:3000/blogposts/create`, {
+        const rsp = await fetch(`http://localhost:3000/blogPosts/create`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
             method: "POST",
             body: JSON.stringify({
-                id: Number(postId),
                 text,
                 title,
+                published: Boolean(body.published)
             }),
         });
         if (rsp.status != 201) {
             const data = await rsp.json();
             return console.log(data);
         }
-        navigate(`/view-post/${postId}`)
+        navigate(`/`)
         
     };
 

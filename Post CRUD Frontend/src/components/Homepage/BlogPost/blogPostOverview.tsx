@@ -12,7 +12,6 @@ function BlogPostOverview({ post }: BlogPostOverviewProps) {
       state: { post },
     });
   }
-  console.log(post.published)
 
   const navigate = useNavigate();
     const postDate = new Date(post.timeposted);

@@ -15,14 +15,17 @@ function App() {
 
 
   useEffect(() => {
-    fetch("http://localhost:3000/blogPosts/view")
-      .then((response) => response.json())
-      .then((data) => {
-        setBlogPosts(data.blogPosts);
-        console.log(data);
+    async function getBlogPosts() {
+      const rsp = await fetch("http://localhost:3000/blogPosts/view", {
+         headers: {
+              "Content-Type": "application/json",
+            },
+            method: "GET",
+          })
+          const data = await response.json();
+          setBlogPosts(data.blogPosts);
       })
-      .catch((error) => console.error(error));
-  }, []);
+  }, [blogPosts.length]);
 
   return (
     <>
