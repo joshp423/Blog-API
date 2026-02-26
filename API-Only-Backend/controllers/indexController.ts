@@ -225,6 +225,7 @@ export function verifyToken(
 }
 
 export async function getAllBlogPosts(req: Request, res: Response) {
+  console.log("DATABASE_URL:", process.env.DATABASE_URL);
   const blogPosts = await prisma.posts.findMany({
     orderBy: {
       id: "desc",
