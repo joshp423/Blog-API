@@ -6,7 +6,7 @@ import type { Editor as TinyMCEEditor } from 'tinymce';
 import { useNavigate } from "react-router-dom";
 
 
-function EditBlogPostPage() {
+function NewBlogPostPage() {
 
     const { postId } = useParams();
     const navigate = useNavigate();
@@ -32,16 +32,16 @@ function EditBlogPostPage() {
 
     const editorRef = useRef<TinyMCEEditor | null>(null);
 
-    const updatePostAPI = async(e: SyntheticEvent<HTMLFormElement>) => {
+    const newPostAPI = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!editorRef.current) return;
 
-        const rsp = await fetch(`http://localhost:3000/blogposts/edit`, {
+        const rsp = await fetch(`http://localhost:3000/blogposts/create`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
-            method: "PUT",
+            method: "POST",
             body: JSON.stringify({
                 id: Number(postId),
                 text,
@@ -59,10 +59,10 @@ function EditBlogPostPage() {
     return (
         <div className='blogPostEditor'>
             <h1>New Post</h1>
-            <form onSubmit={updatePostAPI}>
+            <form onSubmit={newPostAPI}>
                 <label htmlFor="title">Title: </label>
                 <input type="text" value={title} id='title'onChange={(e) => setTitle(e.target.value)}/>
-                Post Content:
+                <h3>Post Content:</h3>
                 <BundledEditor
                     onInit={(_: unknown, editor:TinyMCEEditor) => editorRef.current = editor}
                     value={text}
@@ -82,10 +82,12 @@ function EditBlogPostPage() {
                     }}
                     onEditorChange={(content) => setText(content)}
                 />
+                <label htmlFor="published">Publish Post</label>
+                <input type="checkbox" name="published" id="published"/>
                 <button type="submit" >Update Post</button>
             </form>
         </div>
     );
 }
 
-export default EditBlogPostPage
+export default NewBlogPostPage

@@ -74,10 +74,7 @@ export const signUp = [
   },
 ];
 
-export async function logInView(
-  req: Request,
-  res: Response,
-) {
+export async function logInView(req: Request, res: Response) {
   const user = {
     username: req.body["username"],
     password: req.body["password"],
@@ -108,7 +105,7 @@ export async function logInView(
     const secret = process.env.JWT_SECRET;
 
     if (!secret) {
-      throw new Error("JWT secret is not defined")
+      throw new Error("JWT secret is not defined");
     }
 
     const number = 1;
@@ -122,13 +119,11 @@ export async function logInView(
           //need to account for an error or no token
           return res.status(500).json({ message: "Token generation failed" });
         }
-        return res
-          .json({  
-            message: "Successfully logged in",
-            token,
-            username: userCheck.username
-          
-          })
+        return res.json({
+          message: "Successfully logged in",
+          token,
+          username: userCheck.username,
+        });
       },
     );
   } catch (err) {
@@ -137,10 +132,7 @@ export async function logInView(
   }
 }
 
-export async function logInEdit(
-  req: Request,
-  res: Response,
-) {
+export async function logInEdit(req: Request, res: Response) {
   const user = {
     username: req.body["username"],
     password: req.body["password"],
@@ -175,11 +167,10 @@ export async function logInEdit(
     const secret = process.env.JWT_SECRET;
 
     if (!secret) {
-      throw new Error("JWT secret is not defined")
+      throw new Error("JWT secret is not defined");
     }
 
     const number = 1;
-
 
     jwt.sign(
       { id: userCheck.id, username: userCheck.username },
@@ -190,11 +181,10 @@ export async function logInEdit(
           //need to account for an error or no token
           return res.status(500).json({ message: "Token generation failed" });
         }
-        return res
-          .json({  
-            message: "Successfully logged in",
-            token,
-          })
+        return res.json({
+          message: "Successfully logged in",
+          token,
+        });
       },
     );
   } catch (err) {
@@ -266,10 +256,32 @@ export async function createNewBlogPost(req: Request, res: Response) {
       return res.status(400).json({ message: "Missing fields" });
     }
 
+    const cleanText = sanitizeHtml(text, {
+      allowedTags: [
+        "b",
+        "i",
+        "strong",
+        "em",
+        "p",
+        "ul",
+        "li",
+        "a",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+      ],
+      allowedAttributes: {
+        a: ["href"],
+      },
+    });
+
     const post = await prisma.posts.create({
       data: {
         title,
-        text,
+        text: cleanText,
         published,
         timeposted: new Date(),
       },
@@ -286,18 +298,32 @@ export async function editSelectedBlogPost(req: Request, res: Response) {
     const { id, title, text } = editPostBodySchema.parse(req.body);
 
     const cleanText = sanitizeHtml(text, {
-      allowedTags: ["b", "i", "strong", "em", "p", "ul", "li", "a"],
+      allowedTags: [
+        "b",
+        "i",
+        "strong",
+        "em",
+        "p",
+        "ul",
+        "li",
+        "a",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+      ],
       allowedAttributes: {
-        a: ["href"]
-      }
+        a: ["href"],
+      },
     });
-  
 
     const updatedPost = await prisma.posts.update({
       where: { id },
       data: {
         title,
-        text,
+        text: cleanText,
       },
     });
 
@@ -397,14 +423,14 @@ export async function createNewComment(req: Request, res: Response) {
   }
 }
 
-export async function deleteComment (req: Request, res: Response) {
+export async function deleteComment(req: Request, res: Response) {
   try {
     const postid = Number(req.body["commentId"]);
     await prisma.comments.delete({
-      where: {id: postid,}
-    })
-    return res.status(200).json({message: "Comment successfully deleted"})
-  } catch (error){
-    return res.status(400).json({ error })
+      where: { id: postid },
+    });
+    return res.status(200).json({ message: "Comment successfully deleted" });
+  } catch (error) {
+    return res.status(400).json({ error });
   }
 }
