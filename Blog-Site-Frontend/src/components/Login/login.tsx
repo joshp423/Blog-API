@@ -15,15 +15,14 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
 
   function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    fetch("https://blog-api-backend-jfv8.onrender.com/log-in/viewer", {
+    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/log-in/viewer", {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify({ username, password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    });
+      const data = await rsp.json();
         if (data.message === "Successfully logged in") {
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("username", data.username);

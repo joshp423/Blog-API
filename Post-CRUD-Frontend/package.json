@@ -22,6 +22,7 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.14.2",
     "react-router-dom": "^6.14.2",
+    "sanitize-html": "^2.17.1",
     "tinymce": "^8.3.2"
   },
   "devDependencies": {
