@@ -190,8 +190,9 @@ export async function logInEdit(req: Request, res: Response) {
       },
     );
   } catch (err) {
+    console.error("Login error:", err)
     return res.status(500).json({
-    message: err,
+    message: err instanceof Error? err.message: String(err)
   });
   }
 }
