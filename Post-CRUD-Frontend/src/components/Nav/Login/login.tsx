@@ -16,13 +16,19 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
 
   async function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/log-in/viewer", {
+    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/log-in/editor", {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify({ username, password }),
     });
+
+    if (!rsp.ok) {
+      const text = await rsp.text();
+      console.error(text)
+      return;
+    }
       const data = await rsp.json();
         if (data.message === "Successfully logged in") {
           sessionStorage.setItem("token", data.token);

@@ -136,7 +136,13 @@ export async function logInEdit(req: Request, res: Response) {
     password: req.body["password"],
   };
 
-  const parsedUser = userSchema.parse(user);
+  let parsedUser;
+
+  try {
+    parsedUser = userSchema.parse(user);
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid input" });
+  }
 
   if (typeof parsedUser.username != "string") {
     return res.status(400).json({ message: "Incorrect header" });
