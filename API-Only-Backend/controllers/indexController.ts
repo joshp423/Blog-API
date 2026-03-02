@@ -108,12 +108,10 @@ export async function logInView(req: Request, res: Response) {
       throw new Error("JWT secret is not defined");
     }
 
-    const number = 1;
-
     jwt.sign(
       { id: userCheck.id, username: userCheck.username },
       secret,
-      { expiresIn: `${number}Weeks` },
+      { expiresIn: '1w' },
       function (err, token) {
         if (err || !token) {
           //need to account for an error or no token
@@ -170,12 +168,10 @@ export async function logInEdit(req: Request, res: Response) {
       throw new Error("JWT secret is not defined");
     }
 
-    const number = 1;
-
     jwt.sign(
       { id: userCheck.id, username: userCheck.username },
       secret,
-      { expiresIn: `${number}Weeks` },
+      { expiresIn: '1w' },
       function (err, token) {
         if (err || !token) {
           //need to account for an error or no token

@@ -32,7 +32,7 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
           console.log(data.message, data.username);
           setDisplay("none");
         } else {
-          console.log(data.status, data.message);
+          console.log(data.message);
         }
   }
 
