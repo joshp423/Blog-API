@@ -13,7 +13,7 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
+  async function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
     const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/log-in/viewer", {
       headers: {
@@ -33,8 +33,6 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
         } else {
           console.log(data.message);
         }
-      })
-      .catch((error) => console.error(error));
   }
 
   return (

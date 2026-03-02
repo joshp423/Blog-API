@@ -1,0 +1,9 @@
+body{
+    margin: 0px;
+    font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
+    font-weight: normal;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
