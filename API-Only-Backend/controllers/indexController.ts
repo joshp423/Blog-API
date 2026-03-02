@@ -188,7 +188,7 @@ export async function logInEdit(req: Request, res: Response) {
       },
     );
   } catch (err) {
-    res.sendStatus(500);
+    res.sendStatus(500).json({message: err});
     return err;
   }
 }

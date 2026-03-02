@@ -14,17 +14,16 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
+  async function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    fetch("https://blog-api-backend-jfv8.onrender.com/log-in/editor", {
+    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/log-in/viewer", {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify({ username, password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    });
+      const data = await rsp.json();
         if (data.message === "Successfully logged in") {
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("username", data.username);
@@ -33,10 +32,8 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
           console.log(data.message, data.username);
           setDisplay("none");
         } else {
-          console.log(data.message);
+          console.log(data.status, data.message);
         }
-      })
-      .catch((error) => console.error(error));
   }
 
   return (
