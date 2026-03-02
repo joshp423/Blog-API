@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Nav from "./components/Nav/nav";
-import Login from "./components/Login/login";
 import { type blogPost } from "./types/blogPosts";
 import "./App.css";
 
@@ -35,11 +34,6 @@ function App() {
         setDisplay={setDisplay}
         display={display}
         setLoginStatus={setLoginStatus}
-      />
-      <Login
-        setLoginStatus={setLoginStatus}
-        display={display}
-        setDisplay={setDisplay}
       />
       <Outlet context={{ blogPosts: blogPosts, loginStatus: loginStatus }} />
     </>

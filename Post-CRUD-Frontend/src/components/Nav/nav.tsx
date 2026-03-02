@@ -1,5 +1,7 @@
 import { type Dispatch, type SetStateAction } from "react";
 import { Link } from "react-router-dom";
+import Login from "./Login/login";
+import "./nav.css"
 
 type NavProps = {
   setLoginStatus: (status: boolean) => void;
@@ -21,7 +23,7 @@ function Nav({ display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
     return (
       <div className="navBar">
         <h1>
-          <Link to="/">Blog Site</Link>
+          <Link to="/">Blog Post Editor</Link>
         </h1>
         <div className="navLinks">
           <h3>
@@ -53,9 +55,13 @@ function Nav({ display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
           </button>
         </h3>
         <h3>
-          <Link to="sign-up">Sign Up</Link>
         </h3>
       </div>
+      <Login
+          setLoginStatus={setLoginStatus}
+          display={display}
+          setDisplay={setDisplay}
+      />
     </div>
   );
 }

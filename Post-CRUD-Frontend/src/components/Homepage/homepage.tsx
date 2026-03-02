@@ -28,7 +28,7 @@ function Homepage() {
   return (
     <div className="hpMainNLI">
       <h1>Blog Post Editor</h1>
-      <h3>Please log in or sign up to access editor</h3>
+      <h3>Please log in to access editor.</h3>
     </div>
   )
   

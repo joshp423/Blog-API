@@ -2,6 +2,7 @@ import { useState, type SyntheticEvent } from "react";
 import { type Dispatch, type SetStateAction } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import "./login.css"
 
 type LoginProps = {
   setLoginStatus: (status: boolean) => void; //function that takes a boolean and doesnt return anything
@@ -39,16 +40,16 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
   }
 
   return (
-    <div className="loginForm" style={{ display: display }}>
+    <div className={`loginForm ${display !== "none" ? "active" : ""}`}>
       <form onSubmit={logInAPI}>
         <input
           type="text"
-          placeholder="username"
+          placeholder="Username"
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Submit</button>

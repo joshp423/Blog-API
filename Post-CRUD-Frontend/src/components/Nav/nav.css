@@ -1,0 +1,36 @@
+.navBar {
+    padding: 20px 0px 0px 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr
+}
+
+.navBar>h1>a {
+    text-decoration: none;
+    color: black;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+
+.navLinks {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.navLinks>h3>a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.navLinks>h3>button {
+    text-decoration: none;
+    color: black;
+    border: none;
+    background-color: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0;
+}

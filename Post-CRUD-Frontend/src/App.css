@@ -1,7 +1,9 @@
 body{
-    margin: 0px;
+    background: #E7EAF3;
+    background: linear-gradient(180deg, rgba(231, 234, 243, 0.56) 17%, rgba(187, 187, 187, 0.62) 66%, rgba(170, 170, 170, 1) 89%);
     font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
     font-weight: normal;
+    height: 100vh;
 }
 
 h1, h2, h3, h4 {
