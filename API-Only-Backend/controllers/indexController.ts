@@ -191,7 +191,7 @@ export async function logInEdit(req: Request, res: Response) {
     );
   } catch (err) {
     return res.status(500).json({
-    message: "Internal server error",
+    message: err,
   });
   }
 }
