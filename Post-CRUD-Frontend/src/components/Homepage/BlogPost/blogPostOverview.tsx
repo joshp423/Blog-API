@@ -1,5 +1,8 @@
 import type { blogPost } from "../../../types/blogPosts";
-import { useNavigate } from "react-router-dom";
+import "./blogPost.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+
 
 type BlogPostOverviewProps = {
   post: blogPost;
@@ -7,13 +10,7 @@ type BlogPostOverviewProps = {
 
 // change strings to cut off text
 function BlogPostOverview({ post }: BlogPostOverviewProps) {
-  function goToPost() {
-    navigate(`view-post/${post.id}`, {
-      state: { post },
-    });
-  }
-
-  const navigate = useNavigate();
+  
     const postDate = new Date(post.timeposted);
     const date = postDate.toLocaleDateString();
     const time = postDate.toLocaleTimeString([], {
@@ -21,14 +18,20 @@ function BlogPostOverview({ post }: BlogPostOverviewProps) {
       minute: "2-digit",
       hour12: true,
     });
+
   return (
-    <div className="blogPostOverview">
-      <h1>{post.title}</h1>
-      <p>
-        {time} - {date}
-      </p>
-      <button onClick={goToPost}>View and Edit Blog Post</button>
-    </div>
+    <a href={`view-post/${post.id}`}>
+      <div className="blogPostOverview">
+        <div>
+          <h1>{post.title}</h1>
+          <FontAwesomeIcon icon={faPen} />
+        </div>
+        
+        <p>
+          {time} - {date}
+        </p>
+      </div>
+    </a>
   );
   
 }

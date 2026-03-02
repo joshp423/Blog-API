@@ -64,7 +64,7 @@ function BlogPost() {
 
   if (loginStatus) {
     return (
-      <div className="blogPostOverview">
+      <div className="blogPost">
         <h1>{post.title}</h1>
         <h2 dangerouslySetInnerHTML={{__html:post.text}}></h2>
         <p>
