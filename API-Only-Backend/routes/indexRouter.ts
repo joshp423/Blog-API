@@ -34,7 +34,7 @@ indexRouter.post(
   indexController.createNewComment,
 );
 indexRouter.delete(
-  "comments/delete",
+  "/comments/delete",
   indexController.verifyToken,
   indexController.deleteComment,
 );
