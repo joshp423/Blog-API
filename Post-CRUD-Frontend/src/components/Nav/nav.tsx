@@ -30,7 +30,7 @@ function Nav({ display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
             <Link to="/">Home</Link>
           </h3>
           <h3>
-            <button onClick={logOut}>LogOut</button>
+            <button onClick={logOut}>Log Out</button>
           </h3>
         </div>
       </div>

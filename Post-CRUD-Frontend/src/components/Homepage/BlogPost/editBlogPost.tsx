@@ -89,7 +89,7 @@ function EditBlogPostPage() {
                 />
                 <div className='publishCheck'>
                     <label htmlFor="published">Publish Post?</label>
-                    <input value={published} type="checkbox" name="published" id="published" onChange={(e) => setPublished(Boolean(e.target.value))}/>
+                    <input checked={published} type="checkbox" name="published" id="published" onChange={(e) => setPublished(e.target.checked)}/>
                 </div>
                 <button type="submit" >Update Post</button>
             </form>
