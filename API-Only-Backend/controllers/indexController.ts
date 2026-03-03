@@ -436,6 +436,8 @@ export async function deleteComment(req: Request, res: Response) {
     });
     return res.status(200).json({ message: "Comment successfully deleted" });
   } catch (error) {
-    return res.status(400).json({ error });
+    return res.status(400).json({
+    message: error instanceof Error? error.message: String(error)
+  });
   }
 }
