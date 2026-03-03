@@ -58,7 +58,7 @@ function EditBlogPostPage() {
 
     return (
         <div className='blogPostEditor'>
-            <h1>New Post</h1>
+            <h1>Edit Post</h1>
             <form onSubmit={updatePostAPI}>
                 <label htmlFor="title">Title: </label>
                 <input type="text" value={title} id='title'onChange={(e) => setTitle(e.target.value)}/>

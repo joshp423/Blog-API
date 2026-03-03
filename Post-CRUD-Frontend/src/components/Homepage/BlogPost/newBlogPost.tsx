@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, type SyntheticEvent } from 'react';
 import BundledEditor from '../../../../BundledEditor.tsx'
 import type { Editor as TinyMCEEditor } from 'tinymce';
 import { useNavigate } from "react-router-dom";
-
+import "./newBlogPost.css"
 
 function NewBlogPostPage() {
 
@@ -61,14 +61,16 @@ function NewBlogPostPage() {
         <div className='blogPostEditor'>
             <h1>New Post</h1>
             <form onSubmit={newPostAPI}>
-                <label htmlFor="title">Title: </label>
-                <input type="text" value={title} id='title'onChange={(e) => setTitle(e.target.value)}/>
-                <h3>Post Content:</h3>
+                <div className='newTitle'>
+                    <label htmlFor="title">Title: </label>
+                    <input type="text" value={title} id='title'onChange={(e) => setTitle(e.target.value)}/>
+                </div>
+                <h3>Post Content</h3>
                 <BundledEditor
                     onInit={(_: unknown, editor:TinyMCEEditor) => editorRef.current = editor}
                     value={text}
                     init={{
-                    height: 500,
+                    height: 700,
                     menubar: false,
                     plugins: [
                         'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
@@ -83,9 +85,11 @@ function NewBlogPostPage() {
                     }}
                     onEditorChange={(content) => setText(content)}
                 />
-                <label htmlFor="published">Publish Post</label>
-                <input type="checkbox" name="published" id="published" onChange={(e) => setPublished(Boolean(e.target.value))}/>
-                <button type="submit" >Update Post</button>
+                <div className='publishCheck'>
+                    <label htmlFor="published">Publish Post?</label>
+                    <input type="checkbox" name="published" id="published" onChange={(e) => setPublished(Boolean(e.target.value))}/>
+                </div>
+                <button type="submit" >Save Post</button>
             </form>
         </div>
     );

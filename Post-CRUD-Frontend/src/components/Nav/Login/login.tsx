@@ -3,7 +3,14 @@ import { type Dispatch, type SetStateAction } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import "./login.css"
+import { jwtDecode } from "jwt-decode";
 
+type JwtPayload = {
+  id: number;
+  username: string;
+  iat: number;
+  exp: number;
+}
 type LoginProps = {
   setLoginStatus: (status: boolean) => void; //function that takes a boolean and doesnt return anything
   setDisplay: Dispatch<SetStateAction<string>>;
@@ -31,11 +38,11 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
     }
       const data = await rsp.json();
         if (data.message === "Successfully logged in") {
+          const decoded = jwtDecode<JwtPayload>(data.token);
           sessionStorage.setItem("token", data.token);
-          sessionStorage.setItem("username", data.username);
-          sessionStorage.setItem("loggedUser", data.username);
+          sessionStorage.setItem("username", decoded.username);
+          sessionStorage.setItem("loggedUser", decoded.username);
           setLoginStatus(true);
-          console.log(data.message, data.username);
           setDisplay("none");
         } else {
           console.log(data.message);

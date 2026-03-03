@@ -4,6 +4,7 @@ import type { blogPost } from "../../../types/blogPosts";
 import type { comment } from "../../../types/commentType";
 import Comment from "./Comments/comments";
 import { useOutletContext } from "react-router-dom";
+import "./blogPost.css";
 
 type OutletContextType = {
   loginStatus: boolean;
@@ -19,6 +20,27 @@ function BlogPost() {
   function editPost() {
     navigate(`edit`);
   }
+
+  async function deletePost() {
+    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/blogposts/delete", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      method: "DELETE",
+      body: JSON.stringify({
+        id: postId,
+      }),
+    });
+    const data = await rsp.json()
+    if (rsp.status != 200) {
+      return console.log(data.message);
+    }
+    navigate('/');
+    return;
+    
+  }
+  
 
   useEffect(() => {
     async function fetchPost() {
@@ -63,23 +85,60 @@ function BlogPost() {
   });
 
   if (loginStatus) {
+
+    if (comments.length > 0) {
+      return (
+        <div className="blogPost">
+          <div className="blogPostTitle">
+            <h1>{post.title}</h1>
+            <p>
+              {time} - {date}
+            </p>
+          </div>
+          <div className="blogPostContent">
+            <h2>{String(sessionStorage.getItem("username"))}</h2>
+            <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+          </div>
+          
+          
+        <div className="blogPostEditDelete">
+          <button onClick={editPost}>Edit Post</button>
+          <button onClick={deletePost}>Delete Post</button>
+        </div>
+          <div className="commentsSection">
+            <h2>Comments</h2>
+            {comments?.map((comment: comment) => (
+              <Comment key={comment.id} comment={comment} />
+            ))}
+          </div>
+          <button onClick={() => navigate('/')}>Back</button>
+        </div>
+      );
+    }
+
     return (
       <div className="blogPost">
-        <h1>{post.title}</h1>
-        <h2 dangerouslySetInnerHTML={{__html:post.text}}></h2>
-        <p>
-          {time} - {date}
-        </p>
-      <div className="blogPostEditDelete">
-        <button onClick={editPost}>Edit Post</button>
-      </div>
-        <div className="commentsSection">
-          <h2>Comments:</h2>
-          {comments?.map((comment: comment) => (
-            <Comment key={comment.id} comment={comment} />
-          ))}
+        <div className="blogPostTitle">
+          <h1>{post.title}</h1>
+          <p>
+            {time} - {date}
+          </p>
         </div>
-        <button onClick={() => navigate(-1)}>Back</button>
+        <div className="blogPostContent">
+          <h2>{String(sessionStorage.getItem("username"))}</h2>
+          <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+        </div>
+
+        <div className="blogPostEditDelete">
+          <button onClick={editPost}>Edit Post</button>
+          <button onClick={deletePost}>Delete Post</button>
+        </div>
+
+        <div className="commentsSection">
+          <h2>No Comments</h2>
+        </div>
+
+        <button onClick={() => navigate('/')}>Back</button>
       </div>
     );
   }

@@ -1,53 +1,79 @@
-.blogPostOverview {
+.blogPost {
     display: flex;
     flex-direction: column;
-    border: 1px solid #586A6A;
-    border-radius: 24px;
-    padding: 50px 40px 30px 40px;
-    transform: scale(1);
-    transition: transform 300ms ease-in-out;
-    gap: 20px;
-    background-color: #f0f0f0;
+    margin: 130px 0px 20px 0px;
 }
 
-.blogPostOverview:hover {
+.blogPostTitle {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 150px 0px 150px;
+    align-items: center;
+}
+
+.blogPostTitle>h1 {
+    font-size: 45px;
+}
+
+.blogPostTitle>p {
+    font-size: 20px;
+}
+
+.blogPostContent {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    margin: 100px 10px 50px 0px;
+    min-height: 50vh;
+}
+
+.blogPostContent>h2 {
+    text-align: center;
+    border-right: 1px solid black;
+}
+
+.blogPostContent>div {
+    margin: 0px 50px 0px 50px;
+}
+
+.blogPostEditDelete {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.blogPostEditDelete>button {
+    transform: scale(1);
+    transition: transform 300ms ease-in-out;
+    background-color: #586A6A;
+    border: #586A6A;
+    border-radius: 24px;
+    padding: 5px 10px 5px 10px;
+    color: white;
+    font-weight: 600;
+    justify-content: center;
+}
+
+.blogPostEditDelete>button:hover {
     transform: scale(1.1);
     transition: transform 300ms ease-in-out;
 }
 
-.blogPostOverview>div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.blogPostOverview>div>svg {
-    color: black;
-    background-color: white;
-    border: 1px solid #586A6A;
-    border-radius: 100%;
-    padding: 15px;
-    width: 10px;
-    height: 10px;
-}
-
-.blogPostOverview>h1 {
-    font-size: 30px;
-    font-weight: 500;
-}
-
-.blogPostOverview>p {
-    font-size: 22px;
-}
-
-.blogPostOverview>a {
-    display: flex;
-    justify-content: center;
+.blogPost>button {
+    transform: scale(1);
+    transition: transform 300ms ease-in-out;
     background-color: #586A6A;
     border: #586A6A;
     border-radius: 24px;
-    padding: 5px 5px 5px 10px;
+    padding: 5px;
     color: white;
     font-weight: 600;
+    justify-content: center;
+    width: 80%;
+    align-self: center;
+}
+
+.blogPost>button:hover {
+    transform: scale(1.1);
+    transition: transform 300ms ease-in-out;
+    border: 1px solid green;
 }

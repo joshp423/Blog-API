@@ -1,5 +1,6 @@
 import type { comment } from "../../../../types/commentType";
 import DeleteCommentButton from "./deleteCommentButton";
+import "./comments.css";
 
 type CommentProps = {
   comment: comment;
