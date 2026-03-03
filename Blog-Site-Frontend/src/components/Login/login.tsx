@@ -2,6 +2,7 @@ import { useState, type SyntheticEvent } from "react";
 import { type Dispatch, type SetStateAction } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import "./login.css";
 
 type LoginProps = {
   setLoginStatus: (status: boolean) => void; //function that takes a boolean and doesnt return anything

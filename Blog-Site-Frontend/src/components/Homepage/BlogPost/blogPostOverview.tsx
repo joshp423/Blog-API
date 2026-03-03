@@ -1,5 +1,6 @@
 import type { blogPost } from "../../../types/blogPosts";
 import { useNavigate } from "react-router-dom";
+import "./blogPostOverview.css";
 
 type BlogPostOverviewProps = {
   post: blogPost;

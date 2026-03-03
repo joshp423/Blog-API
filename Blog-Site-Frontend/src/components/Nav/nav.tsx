@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction } from "react";
 import { Link } from "react-router-dom";
+import "./nav.css";
 
 type NavProps = {
   setLoginStatus: (status: boolean) => void;
