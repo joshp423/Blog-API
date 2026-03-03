@@ -28,6 +28,7 @@ function EditBlogPostPage() {
           console.log(data);
           setText(data.blogPost.text);
           setTitle(data.blogPost.title);
+          setPublished(data.blogPost.published);
           return;
         }
         fetchPost();
@@ -88,7 +89,7 @@ function EditBlogPostPage() {
                 />
                 <div className='publishCheck'>
                     <label htmlFor="published">Publish Post?</label>
-                    <input type="checkbox" name="published" id="published" onChange={(e) => setPublished(Boolean(e.target.value))}/>
+                    <input value={published} type="checkbox" name="published" id="published" onChange={(e) => setPublished(Boolean(e.target.value))}/>
                 </div>
                 <button type="submit" >Update Post</button>
             </form>
