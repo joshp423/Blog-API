@@ -12,6 +12,9 @@ function EditBlogPostPage() {
     const navigate = useNavigate();
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
+    const [published, setPublished] = useState<boolean>(false)
+
+
     useEffect(() => {
         async function fetchPost() {
           const response = await fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view/", {
@@ -46,6 +49,7 @@ function EditBlogPostPage() {
                 id: Number(postId),
                 text,
                 title,
+                published
             }),
         });
         if (rsp.status != 201) {
@@ -82,6 +86,10 @@ function EditBlogPostPage() {
                     }}
                     onEditorChange={(content) => setText(content)}
                 />
+                <div className='publishCheck'>
+                    <label htmlFor="published">Publish Post?</label>
+                    <input type="checkbox" name="published" id="published" onChange={(e) => setPublished(Boolean(e.target.value))}/>
+                </div>
                 <button type="submit" >Update Post</button>
             </form>
         </div>

@@ -1,6 +1,5 @@
 
-import { useParams } from 'react-router';
-import { useEffect, useState, useRef, type SyntheticEvent } from 'react';
+import { useState, useRef, type SyntheticEvent } from 'react';
 import BundledEditor from '../../../../BundledEditor.tsx'
 import type { Editor as TinyMCEEditor } from 'tinymce';
 import { useNavigate } from "react-router-dom";
@@ -8,28 +7,10 @@ import "./newBlogPost.css"
 
 function NewBlogPostPage() {
 
-    const { postId } = useParams();
     const navigate = useNavigate();
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [published, setPublished] = useState<boolean>(false)
-    useEffect(() => {
-        async function fetchPost() {
-          const response = await fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view/", {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify({ blogpostId: Number(postId) }),
-          });
-          const data = await response.json();
-          console.log(data);
-          setText(data.blogPost.text);
-          setTitle(data.blogPost.title);
-          return;
-        }
-        fetchPost();
-    }, [postId])
 
     const editorRef = useRef<TinyMCEEditor | null>(null);
 

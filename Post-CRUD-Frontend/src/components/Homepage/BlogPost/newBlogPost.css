@@ -58,3 +58,7 @@
     font-weight: 600;
     cursor: pointer;
 }
+
+.blogPostEditor>button {
+    margin-top: 20px;
+}

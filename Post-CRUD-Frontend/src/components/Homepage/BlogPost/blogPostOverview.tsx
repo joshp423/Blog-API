@@ -19,6 +19,23 @@ function BlogPostOverview({ post }: BlogPostOverviewProps) {
       hour12: true,
     });
 
+    if (!post.published) {
+      return (
+        <a href={`view-post/${post.id}`}>
+          <div className="blogPostOverview">
+            <div>
+              <h1>{post.title}</h1>
+              <FontAwesomeIcon icon={faPen} />
+            </div>
+            
+            <p>
+              {time} - {date}
+            </p>
+            <p>Not Published</p>
+          </div>
+        </a>
+      );
+    }
   return (
     <a href={`view-post/${post.id}`}>
       <div className="blogPostOverview">
@@ -30,6 +47,7 @@ function BlogPostOverview({ post }: BlogPostOverviewProps) {
         <p>
           {time} - {date}
         </p>
+        <p>Published</p>
       </div>
     </a>
   );

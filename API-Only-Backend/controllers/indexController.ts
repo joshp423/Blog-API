@@ -301,6 +301,7 @@ export async function createNewBlogPost(req: Request, res: Response) {
 export async function editSelectedBlogPost(req: Request, res: Response) {
   try {
     const { id, title, text } = editPostBodySchema.parse(req.body);
+    const published = req.body["published"];
 
     const cleanText = sanitizeHtml(text, {
       allowedTags: [
@@ -329,6 +330,7 @@ export async function editSelectedBlogPost(req: Request, res: Response) {
       data: {
         title,
         text: cleanText,
+        published,
       },
     });
 
