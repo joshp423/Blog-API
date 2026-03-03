@@ -33,7 +33,7 @@ indexRouter.post(
   indexController.verifyToken,
   indexController.createNewComment,
 );
-indexRouter.get(
+indexRouter.delete(
   "comments/delete",
   indexController.verifyToken,
   indexController.deleteComment,
