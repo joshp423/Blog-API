@@ -11,6 +11,7 @@ function NewBlogPostPage() {
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [published, setPublished] = useState<boolean>(false)
+    const [author, setAuthor] = useState<string>("");
 
     const editorRef = useRef<TinyMCEEditor | null>(null);
 
@@ -27,7 +28,8 @@ function NewBlogPostPage() {
             body: JSON.stringify({
                 text,
                 title,
-                published: published
+                published,
+                author
             }),
         });
         if (rsp.status != 201) {
@@ -66,6 +68,10 @@ function NewBlogPostPage() {
                     }}
                     onEditorChange={(content) => setText(content)}
                 />
+                <div className='postAuthor'>
+                    <label htmlFor="author">Author: </label>
+                    <input type="text" name="author" id="author" onChange={(e) => setAuthor(e.target.value)}/>
+                </div>
                 <div className='publishCheck'>
                     <label htmlFor="published">Publish Post?</label>
                     <input type="checkbox" name="published" id="published" onChange={(e) => setPublished(Boolean(e.target.value))}/>

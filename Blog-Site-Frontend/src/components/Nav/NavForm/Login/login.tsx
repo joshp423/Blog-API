@@ -2,7 +2,6 @@ import { useState, type SyntheticEvent } from "react";
 import { type Dispatch, type SetStateAction } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import "./login.css"
 import { jwtDecode } from "jwt-decode";
 
 type JwtPayload = {
@@ -14,10 +13,9 @@ type JwtPayload = {
 type LoginProps = {
   setLoginStatus: (status: boolean) => void; //function that takes a boolean and doesnt return anything
   setDisplay: Dispatch<SetStateAction<string>>;
-  display: string;
 };
 
-function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
+function Login({ setLoginStatus, setDisplay }: LoginProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -48,9 +46,9 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
           console.log(data.message);
         }
   }
-
+  
   return (
-    <div className={`loginForm ${display !== "none" ? "active" : ""}`}>
+    <div>
       <form onSubmit={logInAPI}>
         <input
           type="text"

@@ -59,6 +59,20 @@
     cursor: pointer;
 }
 
+.postAuthor {
+    display: flex;
+    gap: 5px;
+}
+.postAuthor>label {
+    font-size: 24px;
+}
+
+.postAuthor>input {
+    width: 100%;
+    border-radius: 24px;
+    padding: 5px 10px 5px 10px;
+}
+
 .blogPostEditor>button {
     margin-top: 20px;
 }

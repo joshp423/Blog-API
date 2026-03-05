@@ -8,6 +8,7 @@
     transform: translateX(-20%);
     opacity: 0;
     transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+    pointer-events: none;
 }
 
 .loginForm.active {
@@ -44,6 +45,10 @@
     border-radius: 12px;
 }
 
+.loginForm>a {
+    display: flex;
+    align-items: center;
+}
 .loginForm>a>svg {
     height: 18px;
 }

@@ -35,29 +35,6 @@
     margin: 0px 50px 0px 50px;
 }
 
-.blogPostEditDelete {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.blogPostEditDelete>button {
-    transform: scale(1);
-    transition: transform 300ms ease-in-out;
-    background-color: #586A6A;
-    border: #586A6A;
-    border-radius: 24px;
-    padding: 5px 10px 5px 10px;
-    color: white;
-    font-weight: 600;
-    justify-content: center;
-}
-
-.blogPostEditDelete>button:hover {
-    transform: scale(1.1);
-    transition: transform 300ms ease-in-out;
-}
-
 .blogPost>button {
     transform: scale(1);
     transition: transform 300ms ease-in-out;
@@ -70,6 +47,7 @@
     justify-content: center;
     width: 80%;
     align-self: center;
+    padding-bottom: 3px;
 }
 
 .blogPost>button:hover {

@@ -54,8 +54,6 @@ function Nav({ display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
             Log In
           </button>
         </h3>
-        <h3>
-        </h3>
       </div>
       <Login
           setLoginStatus={setLoginStatus}

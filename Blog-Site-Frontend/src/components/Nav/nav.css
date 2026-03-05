@@ -2,6 +2,7 @@
     padding: 20px 0px 0px 10px;
     display: grid;
     grid-template-columns: 1fr 1fr 2fr
+    
 }
 
 .navBar>h1>a {
@@ -22,17 +23,27 @@
     text-decoration: none;
     color: black;
     font-size: 18px;
-    font-weight: 600;
-    
+    font-weight: 400;
+    height: 20px;
 }
 
 .navLinks>h3>button {
     text-decoration: none;
     color: black;
     border: none;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 18px;
     padding: 0;
     cursor: pointer;
     background-color: transparent;
+    height: 20px;
+    font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+    font-weight: normal;
+}
+
+.navLinks>h3 {
+    height: 20px
+}
+
+.navForm {
+    display: flex;
 }

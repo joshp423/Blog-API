@@ -1,18 +1,30 @@
-import { type Dispatch, type SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import "./nav.css";
-import Login from "./Login/login";
+import NavForm from "./NavForm/navForm";
 
 type NavProps = {
   setLoginStatus: (status: boolean) => void;
-  display: string;
+  Display: string;
   setDisplay: Dispatch<SetStateAction<string>>; // function that updates state of useState hook with a string
   loginStatus: boolean;
 };
-function Nav({ display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
+
+function Nav({ Display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
+  
+  const [formType, setFormType] = useState("");
+
   const showLoginForm = () => {
+    setFormType("Login")
     setDisplay((prev) => (prev === "none" ? "flex" : "none"));
   };
+
+  const showSignUpForm = () => {
+    setFormType("Signup")
+    setDisplay((prev) => (prev === "none" ? "flex" : "none"));
+  };
+  
+  
 
   const logOut = () => {
     setLoginStatus(false);
@@ -49,20 +61,28 @@ function Nav({ display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
         <h3>
           <button
             onClick={showLoginForm}
-            style={{ display: display === "none" ? "flex" : "none" }}
+            style={{ display: Display=== "none" ? "flex" : "none" }}
           >
             Log In
           </button>
         </h3>
         <h3>
-          <Link to="sign-up">Sign Up</Link>
+          <button
+            onClick={showSignUpForm}
+            style={{ display: Display === "none" ? "flex" : "none" }}
+          >
+            Sign Up
+          </button>
         </h3>
       </div>
-      <Login
-          setLoginStatus={setLoginStatus}
-          display={display}
+      <div className={`navForm ${Display !== "none" ? "active" : ""}`}>
+        <NavForm
           setDisplay={setDisplay}
-      />
+          setLoginStatus={setLoginStatus}
+          formType={formType}
+        />
+      </div>
+      
     </div>
   );
 }

@@ -4,6 +4,7 @@ interface blogPost {
   published: boolean;
   text: string;
   title: string;
+  author: string;
 }
 
 export type { blogPost };

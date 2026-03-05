@@ -9,7 +9,8 @@ const App = () => {
   const [loginStatus, setLoginStatus] = useState<boolean>(() =>
     Boolean(sessionStorage.getItem("loggedUser")),
   );
-  const [display, setDisplay] = useState<string>("none");
+  const [Display, setDisplay] = useState<string>("none");
+
 
   useEffect(() => {
     fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view")
@@ -24,10 +25,10 @@ const App = () => {
   return (
     <>
       <Nav
+        setLoginStatus={setLoginStatus}
         loginStatus={loginStatus}
         setDisplay={setDisplay}
-        display={display}
-        setLoginStatus={setLoginStatus}
+        Display={Display}
       />
       <Outlet context={{ blogPosts: blogPosts, loginStatus: loginStatus }} />
     </>

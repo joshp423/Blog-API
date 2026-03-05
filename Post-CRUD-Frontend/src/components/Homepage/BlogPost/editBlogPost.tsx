@@ -13,7 +13,7 @@ function EditBlogPostPage() {
     const [text, setText] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [published, setPublished] = useState<boolean>(false)
-
+    const [author, setAuthor] = useState<string>("");
 
     useEffect(() => {
         async function fetchPost() {
@@ -29,6 +29,7 @@ function EditBlogPostPage() {
           setText(data.blogPost.text);
           setTitle(data.blogPost.title);
           setPublished(data.blogPost.published);
+          setAuthor(data.blogPost.author);
           return;
         }
         fetchPost();
@@ -50,7 +51,8 @@ function EditBlogPostPage() {
                 id: Number(postId),
                 text,
                 title,
-                published
+                published,
+                author
             }),
         });
         if (rsp.status != 201) {
@@ -87,6 +89,10 @@ function EditBlogPostPage() {
                     }}
                     onEditorChange={(content) => setText(content)}
                 />
+                <div className='postAuthor'>
+                    <label htmlFor="author">Author: </label>
+                    <input type="text" name="author" id="author" value={author} onChange={(e) => setAuthor(e.target.value)}/>
+                </div>
                 <div className='publishCheck'>
                     <label htmlFor="published">Publish Post?</label>
                     <input checked={published} type="checkbox" name="published" id="published" onChange={(e) => setPublished(e.target.checked)}/>

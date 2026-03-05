@@ -1,4 +1,4 @@
-.loginForm {
+.navForm {
     flex-direction: row;
     display: flex;
     align-items: center;
@@ -11,7 +11,7 @@
     pointer-events: none;
 }
 
-.loginForm.active {
+.navForm.active {
     flex-direction: row;
     display: flex;
     transform: translateX(0%);
@@ -19,33 +19,42 @@
     pointer-events: auto;
 }
 
-.loginForm>form {
+.navForm>div {
+    display: flex;
+    gap: 5px;
+}
+
+.navForm>div>form {
     display: flex;
     gap: 5px;
     
 }
 
-.loginForm>form>input {
+.navForm>div>form>input {
     border: 2px solid #586A6A;
     border-radius: 12px;
     width: 40%;
     padding: 0px 5px 0px 10px;
-    background-color: rgb(252, 252, 252)
+    background-color: rgb(252, 252, 252);
 }
 
-.loginForm>form>button {
+.navForm>div>form>button {
     border: 2px solid #586A6A;
     border-radius: 12px;
-    background-color: rgb(252, 252, 252)
-
+    background-color: rgb(252, 252, 252);
+    min-width: 20%;
 }
 
-.loginForm>form>button:hover {
+.navForm>div>form>button:hover {
     border: 2px solid #669e7f;
     border-radius: 12px;
 }
 
-.loginForm>a>svg {
-    height: 18px;
+.navForm>div>a {
+    display: flex;
+    align-items: center;
 }
 
+.navForm>div>a>svg {
+    height: 18px;
+}

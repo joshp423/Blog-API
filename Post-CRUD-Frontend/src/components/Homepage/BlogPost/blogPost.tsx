@@ -96,7 +96,7 @@ function BlogPost() {
             </p>
           </div>
           <div className="blogPostContent">
-            <h2>{String(sessionStorage.getItem("username"))}</h2>
+            <h2>{post.author}</h2>
             <div dangerouslySetInnerHTML={{__html:post.text}}></div>
           </div>
           
@@ -125,7 +125,7 @@ function BlogPost() {
           </p>
         </div>
         <div className="blogPostContent">
-          <h2>{String(sessionStorage.getItem("username"))}</h2>
+          <h2>{post.author}</h2>
           <div dangerouslySetInnerHTML={{__html:post.text}}></div>
         </div>
 
