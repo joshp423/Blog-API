@@ -255,7 +255,7 @@ export async function getSelectedBlogPost(req: Request, res: Response) {
 }
 
 export async function getAuthorBlogPost(req: Request, res: Response) {
-  const blogPost = await prisma.users.findUnique({
+  const blogPost = await prisma.user.findUnique({
     where: {
       id: Number(req.body["userId"]),
     },
