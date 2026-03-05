@@ -254,6 +254,18 @@ export async function getSelectedBlogPost(req: Request, res: Response) {
   return;
 }
 
+export async function getAuthorBlogPost(req: Request, res: Response) {
+  const blogPost = await prisma.users.findUnique({
+    where: {
+      id: Number(req.body["userId"]),
+    },
+  });
+  res.json({
+    blogPost,
+  });
+  return;
+}
+
 export async function createNewBlogPost(req: Request, res: Response) {
   try {
     const { title, text, published } = createPostBodySchema.parse(req.body);

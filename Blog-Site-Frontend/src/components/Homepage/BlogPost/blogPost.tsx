@@ -5,6 +5,7 @@ import type { comment } from "../../../types/commentType";
 import Comment from "./Comments/comments";
 import { useOutletContext } from "react-router-dom";
 import AddCommentForm from "./Comments/addCommentForm";
+import "./blogPost.css"
 
 type OutletContextType = {
   loginStatus: boolean;
@@ -61,40 +62,103 @@ function BlogPost() {
   });
 
   if (loginStatus) {
-    return (
-      <div className="blogPostOverview">
-        <h1>{post.title}</h1>
-        <h1>{post.text}</h1>
-        <p>
-          {time} - {date}
-        </p>
-        <div className="commentsSection">
-          <h2>Comments:</h2>
-          {comments?.map((comment: comment) => (
-            <Comment key={comment.id} comment={comment} />
-          ))}
-          <AddCommentForm post={post} onCommentAdd={fetchComments} />
+
+    if (comments.length > 0) {
+      return (
+        <div className="blogPost">
+          <div className="blogPostTitle">
+            <h1>{post.title}</h1>
+            <p>
+              {time} - {date}
+            </p>
+          </div>
+          <div className="blogPostContent">
+            <h2>{String(sessionStorage.getItem("username"))}</h2>
+            <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+          </div>
+          
+          <div className="commentsSection">
+            <h2>Comments:</h2>
+            {comments?.map((comment: comment) => (
+              <Comment key={comment.id} comment={comment} />
+            ))}
+            <AddCommentForm post={post} onCommentAdd={fetchComments} />
         </div>
-        <button onClick={() => navigate(-1)}>Back</button>
+          <button onClick={() => navigate('/')}>Back</button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="blogPost">
+        <div className="blogPostTitle">
+          <h1>{post.title}</h1>
+          <p>
+            {time} - {date}
+          </p>
+        </div>
+        <div className="blogPostContent">
+          <h2>{String(sessionStorage.getItem("username"))}</h2>
+          <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+        </div>
+
+        <div className="commentsSection">
+          <h2>No Comments</h2>
+        </div>
+
+        <button onClick={() => navigate('/')}>Back</button>
       </div>
     );
   }
-  return (
-    <div className="blogPostOverview">
-      <h1>{post.title}</h1>
-      <h1>{post.text}</h1>
-      <p>
-        {time} - {date}
-      </p>
-      <div className="commentsSection">
-        <h2>Comments:</h2>
-        {comments?.map((comment: comment) => (
-          <Comment key={comment.id} comment={comment} />
-        ))}
+  if (comments.length > 0) {
+      return (
+        <div className="blogPost">
+          <div className="blogPostTitle">
+            <h1>{post.title}</h1>
+            <p>
+              {time} - {date}
+            </p>
+          </div>
+          <div className="blogPostContent">
+            <h2>{String(sessionStorage.getItem("username"))}</h2>
+            <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+          </div>
+          
+          <div className="commentsSection">
+            <h2>Comments:</h2>
+            {comments?.map((comment: comment) => (
+              <Comment key={comment.id} comment={comment} />
+            ))}
+            <AddCommentForm post={post} onCommentAdd={fetchComments} />
+        </div>
+          <button onClick={() => navigate('/')}>Back</button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="blogPost">
+        <div className="blogPostTitle">
+          <h1>{post.title}</h1>
+          <p>
+            {time} - {date}
+          </p>
+        </div>
+        <div className="blogPostContent">
+          <h2>{String(sessionStorage.getItem("username"))}</h2>
+          <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+        </div>
+
+        <div className="commentsSection">
+          <h2>No Comments</h2>
+        </div>
+
+        <button onClick={() => navigate('/')}>Back</button>
       </div>
-      <button onClick={() => navigate(-1)}>Back</button>
-    </div>
-  );
-}
+    );
+  }
+
+
+
 
 export default BlogPost;

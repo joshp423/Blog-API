@@ -38,5 +38,6 @@ indexRouter.delete(
   indexController.verifyToken,
   indexController.deleteComment,
 );
-
+indexRouter.get("/blogPosts/getAuthor",
+  indexController.getAuthorBlogPost)
 export default indexRouter;
