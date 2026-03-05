@@ -21,4 +21,5 @@ a {
 button {
     font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
     font-weight: normal;
+    padding: 5px 10px 3px 10px;
 }
