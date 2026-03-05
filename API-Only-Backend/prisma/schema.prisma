@@ -26,6 +26,7 @@ model Posts {
   text String
   timeposted DateTime
   published Boolean
+  author String
   comments Comments[]
 }
 
