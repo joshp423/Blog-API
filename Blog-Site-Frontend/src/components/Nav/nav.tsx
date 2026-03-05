@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "./nav.css";
 import NavForm from "./NavForm/navForm";
 
-
 type NavProps = {
   setLoginStatus: (status: boolean) => void;
   Display: string;
@@ -12,20 +11,17 @@ type NavProps = {
 };
 
 function Nav({ Display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
-  
   const [formType, setFormType] = useState("");
 
   const showLoginForm = () => {
-    setFormType("Login")
+    setFormType("Login");
     setDisplay((prev) => (prev === "none" ? "flex" : "none"));
   };
 
   const showSignUpForm = () => {
-    setFormType("Signup")
+    setFormType("Signup");
     setDisplay((prev) => (prev === "none" ? "flex" : "none"));
   };
-  
-  
 
   const logOut = () => {
     setLoginStatus(false);
@@ -62,7 +58,7 @@ function Nav({ Display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
         <h3>
           <button
             onClick={showLoginForm}
-            style={{ display: Display=== "none" ? "flex" : "none" }}
+            style={{ display: Display === "none" ? "flex" : "none" }}
           >
             Log In
           </button>
@@ -83,7 +79,6 @@ function Nav({ Display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
           formType={formType}
         />
       </div>
-      
     </div>
   );
 }

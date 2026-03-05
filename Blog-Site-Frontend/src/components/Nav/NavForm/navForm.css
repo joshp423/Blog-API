@@ -1,91 +1,85 @@
 .navForm {
-    flex-direction: row;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
-    font-weight: normal;
-    transform: translateX(-20%);
-    opacity: 0;
-    transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
-    pointer-events: none;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family:
+    Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro, sans-serif;
+  font-weight: normal;
+  transform: translateX(-20%);
+  opacity: 0;
+  transition:
+    transform 300ms ease-in-out,
+    opacity 300ms ease-in-out;
+  pointer-events: none;
 }
 
 .navForm.active {
-    flex-direction: row;
-    display: flex;
-    transform: translateX(0%);
-    opacity: 1;
-    pointer-events: auto;
+  flex-direction: row;
+  display: flex;
+  transform: translateX(0%);
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.navForm>div {
-    display: flex;
-    gap: 5px;
+.navForm > div {
+  display: flex;
+  gap: 5px;
 }
 
-.navForm>div>form {
-    display: flex;
-    gap: 5px;
-    
+.navForm > div > form {
+  display: flex;
+  gap: 5px;
 }
 
-.navForm>div>form>input {
-    border: 2px solid #586A6A;
-    border-radius: 12px;
-    width: 40%;
-    padding: 0px 5px 0px 10px;
-    background-color: rgb(252, 252, 252);
+.navForm > div > form > input {
+  border: 2px solid #586a6a;
+  border-radius: 12px;
+  width: 40%;
+  padding: 0px 5px 0px 10px;
+  background-color: rgb(252, 252, 252);
 }
 
-.navForm>div>form>button {
-    border: 2px solid #586A6A;
-    border-radius: 12px;
-    background-color: rgb(252, 252, 252);
-    min-width: 20%;
+.navForm > div > form > button {
+  border: 2px solid #586a6a;
+  border-radius: 12px;
+  background-color: rgb(252, 252, 252);
+  min-width: 20%;
 }
 
-.navForm>div>form>button:hover {
-    border: 2px solid #669e7f;
-    border-radius: 12px;
+.navForm > div > form > button:hover {
+  border: 2px solid #669e7f;
+  border-radius: 12px;
 }
 
-.navForm>div>a {
-    display: flex;
-    align-items: center;
+.navForm > div > a {
+  display: flex;
+  align-items: center;
 }
 
-.navForm>div>a>svg {
-    height: 18px;
+.navForm > div > a > svg {
+  height: 18px;
 }
 
 .loading {
-    
-    margin: auto;
-    width: 4px;
-    height: 4px;
-    background: #586A6A;
-    border-radius: 50%;
+  margin: auto;
+  width: 4px;
+  height: 4px;
+  background: #586a6a;
+  border-radius: 50%;
 }
 
 @keyframes load {
-    from {
-      transform:
-        rotate(0deg)
-        translateX(5px);
-    }
-    to {
-      transform:
-        rotate(360deg)
-        translateX(5px);
-    }
+  from {
+    transform: rotate(0deg) translateX(5px);
   }
+  to {
+    transform: rotate(360deg) translateX(5px);
+  }
+}
 
-@media (
-    prefers-reduced-motion: no-preference
-  ) {
-    .loading {
-      animation:
-        load 1000ms linear infinite;
-    }
+@media (prefers-reduced-motion: no-preference) {
+  .loading {
+    animation: load 1000ms linear infinite;
   }
+}

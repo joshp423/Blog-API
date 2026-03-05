@@ -1,7 +1,7 @@
 import BlogPostOverview from "./BlogPost/blogPostOverview";
 import type { blogPost } from "../../types/blogPosts";
 import { useOutletContext } from "react-router-dom";
-import "./homepage.css"
+import "./homepage.css";
 
 type OutletContextType = {
   blogPosts: blogPost[];

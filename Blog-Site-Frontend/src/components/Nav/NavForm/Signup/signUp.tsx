@@ -1,4 +1,9 @@
-import { useState, type SyntheticEvent, type SetStateAction, type Dispatch } from "react";
+import {
+  useState,
+  type SyntheticEvent,
+  type SetStateAction,
+  type Dispatch,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +13,7 @@ type SignUpProps = {
   setDisplay: Dispatch<SetStateAction<string>>;
 };
 
-function Signup({setDisplay}:SignUpProps) {
+function Signup({ setDisplay }: SignUpProps) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
@@ -16,14 +21,17 @@ function Signup({setDisplay}:SignUpProps) {
 
   async function signupAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true)
-    const rsp = await fetch(`https://blog-api-backend-jfv8.onrender.com/sign-up`, {
-      headers: {
-        "Content-Type": "application/json",
+    setLoading(true);
+    const rsp = await fetch(
+      `https://blog-api-backend-jfv8.onrender.com/sign-up`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ username, password }),
       },
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-    });
+    );
     if (rsp.status != 201) {
       setLoading(false);
       return console.log("invalid sign-up");
@@ -31,7 +39,7 @@ function Signup({setDisplay}:SignUpProps) {
     setLoading(false);
     navigate(0);
   }
-  
+
   return (
     <div>
       <form onSubmit={signupAPI}>
@@ -45,9 +53,7 @@ function Signup({setDisplay}:SignUpProps) {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <LoginSubmitLoading 
-          loading={loading}
-        />
+        <LoginSubmitLoading loading={loading} />
       </form>
       <a onClick={() => setDisplay("none")}>
         <FontAwesomeIcon icon={faX} />

@@ -11,7 +11,6 @@ const App = () => {
   );
   const [Display, setDisplay] = useState<string>("none");
 
-
   useEffect(() => {
     fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view")
       .then((response) => response.json())

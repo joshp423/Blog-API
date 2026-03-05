@@ -5,7 +5,7 @@ import type { comment } from "../../../types/commentType";
 import Comment from "./Comments/comments";
 import { useOutletContext } from "react-router-dom";
 import AddCommentForm from "./Comments/addCommentForm";
-import "./blogPost.css"
+import "./blogPost.css";
 
 type OutletContextType = {
   loginStatus: boolean;
@@ -19,13 +19,16 @@ function BlogPost() {
   const { loginStatus } = useOutletContext<OutletContextType>();
 
   async function fetchComments() {
-    const response = await fetch("https://blog-api-backend-jfv8.onrender.com/comments/view/", {
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "https://blog-api-backend-jfv8.onrender.com/comments/view/",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ postId: Number(postId) }),
       },
-      method: "POST",
-      body: JSON.stringify({ postId: Number(postId) }),
-    });
+    );
     const data = await response.json();
     console.log(data);
     setComments(data.comments);
@@ -34,19 +37,21 @@ function BlogPost() {
 
   useEffect(() => {
     async function fetchPost() {
-      const response = await fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/view/", {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://blog-api-backend-jfv8.onrender.com/blogPosts/view/",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({ blogpostId: Number(postId) }),
         },
-        method: "POST",
-        body: JSON.stringify({ blogpostId: Number(postId) }),
-      });
+      );
       const data = await response.json();
       console.log(data);
       setPost(data.blogPost);
       return;
     }
-
 
     fetchPost();
     fetchComments();
@@ -63,7 +68,6 @@ function BlogPost() {
   });
 
   if (loginStatus) {
-
     if (comments.length > 0) {
       return (
         <div className="blogPost">
@@ -75,17 +79,17 @@ function BlogPost() {
           </div>
           <div className="blogPostContent">
             <h2>{post.author}</h2>
-            <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+            <div dangerouslySetInnerHTML={{ __html: post.text }}></div>
           </div>
-          
+
           <div className="commentsSection">
             <h2>Comments:</h2>
             {comments?.map((comment: comment) => (
               <Comment key={comment.id} comment={comment} />
             ))}
             <AddCommentForm post={post} onCommentAdd={fetchComments} />
-        </div>
-          <button onClick={() => navigate('/')}>Back</button>
+          </div>
+          <button onClick={() => navigate("/")}>Back</button>
         </div>
       );
     }
@@ -100,43 +104,19 @@ function BlogPost() {
         </div>
         <div className="blogPostContent">
           <h2>{post.author}</h2>
-          <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+          <div dangerouslySetInnerHTML={{ __html: post.text }}></div>
         </div>
 
         <div className="commentsSection">
           <h2>No Comments</h2>
           <AddCommentForm post={post} onCommentAdd={fetchComments} />
         </div>
-        <button onClick={() => navigate('/')}>Back</button>
+        <button onClick={() => navigate("/")}>Back</button>
       </div>
     );
   }
 
   if (comments.length > 0) {
-      return (
-        <div className="blogPost">
-          <div className="blogPostTitle">
-            <h1>{post.title}</h1>
-            <p>
-              {time} - {date}
-            </p>
-          </div>
-          <div className="blogPostContent">
-            <h2>{post.author}</h2>
-            <div dangerouslySetInnerHTML={{__html:post.text}}></div>
-          </div>
-          
-          <div className="commentsSection">
-            <h2>Comments:</h2>
-            {comments?.map((comment: comment) => (
-              <Comment key={comment.id} comment={comment} />
-            ))}
-        </div>
-          <button onClick={() => navigate('/')}>Back</button>
-        </div>
-      );
-    }
-
     return (
       <div className="blogPost">
         <div className="blogPostTitle">
@@ -147,19 +127,40 @@ function BlogPost() {
         </div>
         <div className="blogPostContent">
           <h2>{post.author}</h2>
-          <div dangerouslySetInnerHTML={{__html:post.text}}></div>
+          <div dangerouslySetInnerHTML={{ __html: post.text }}></div>
         </div>
 
         <div className="commentsSection">
-          <h2>No Comments</h2>
+          <h2>Comments:</h2>
+          {comments?.map((comment: comment) => (
+            <Comment key={comment.id} comment={comment} />
+          ))}
         </div>
-
-        <button onClick={() => navigate('/')}>Back</button>
+        <button onClick={() => navigate("/")}>Back</button>
       </div>
     );
   }
 
+  return (
+    <div className="blogPost">
+      <div className="blogPostTitle">
+        <h1>{post.title}</h1>
+        <p>
+          {time} - {date}
+        </p>
+      </div>
+      <div className="blogPostContent">
+        <h2>{post.author}</h2>
+        <div dangerouslySetInnerHTML={{ __html: post.text }}></div>
+      </div>
 
+      <div className="commentsSection">
+        <h2>No Comments</h2>
+      </div>
 
+      <button onClick={() => navigate("/")}>Back</button>
+    </div>
+  );
+}
 
 export default BlogPost;

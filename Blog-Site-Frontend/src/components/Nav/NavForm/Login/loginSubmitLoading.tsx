@@ -1,18 +1,12 @@
-
 type FormSubmitLoadingProps = {
-    loading: boolean
+  loading: boolean;
+};
+
+function FormSubmitLoading({ loading }: FormSubmitLoadingProps) {
+  if (loading) {
+    return <div className="loading"></div>;
+  }
+  return <button type="submit">Submit</button>;
 }
 
-function FormSubmitLoading({ loading }:FormSubmitLoadingProps) {
-    if (loading) {
-        return(
-            <div className="loading"></div>
-        )
-    }
-    return(
-        <button type="submit">Submit</button>
-    )
-
-}
-
-export default FormSubmitLoading
+export default FormSubmitLoading;

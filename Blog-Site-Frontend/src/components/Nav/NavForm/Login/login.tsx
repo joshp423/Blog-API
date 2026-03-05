@@ -5,13 +5,12 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { jwtDecode } from "jwt-decode";
 import LoginSubmitLoading from "./loginSubmitLoading";
 
-
 type JwtPayload = {
   id: number;
   username: string;
   iat: number;
   exp: number;
-}
+};
 type LoginProps = {
   setLoginStatus: (status: boolean) => void; //function that takes a boolean and doesnt return anything
   setDisplay: Dispatch<SetStateAction<string>>;
@@ -24,40 +23,43 @@ function Login({ setLoginStatus, setDisplay }: LoginProps) {
 
   async function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     try {
-      const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/log-in/editor", {
-        headers: {
-          "Content-Type": "application/json",
+      const rsp = await fetch(
+        "https://blog-api-backend-jfv8.onrender.com/log-in/editor",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify({ username, password }),
         },
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-      });
+      );
 
       if (!rsp.ok) {
         const text = await rsp.text();
-        console.error(text)
+        console.error(text);
         setLoading(false);
         return;
       }
-        const data = await rsp.json();
-          if (data.message === "Successfully logged in") {
-            const decoded = jwtDecode<JwtPayload>(data.token);
-            sessionStorage.setItem("token", data.token);
-            sessionStorage.setItem("username", decoded.username);
-            sessionStorage.setItem("loggedUser", decoded.username);
-            setLoginStatus(true);
-            setDisplay("none");
-          } else {
-            console.log(data.message);
-          }
+      const data = await rsp.json();
+      if (data.message === "Successfully logged in") {
+        const decoded = jwtDecode<JwtPayload>(data.token);
+        sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("username", decoded.username);
+        sessionStorage.setItem("loggedUser", decoded.username);
+        setLoginStatus(true);
+        setDisplay("none");
+      } else {
+        console.log(data.message);
+      }
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  } 
-  
+  }
+
   return (
     <div>
       <form onSubmit={logInAPI}>
@@ -71,9 +73,7 @@ function Login({ setLoginStatus, setDisplay }: LoginProps) {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <LoginSubmitLoading
-          loading={loading}
-        />
+        <LoginSubmitLoading loading={loading} />
       </form>
       <a onClick={() => setDisplay("none")}>
         <FontAwesomeIcon icon={faX} />

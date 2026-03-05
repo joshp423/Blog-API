@@ -1,5 +1,5 @@
 import type { comment } from "../../../../types/commentType";
-import "./comments.css"
+import "./comments.css";
 type CommentProps = {
   comment: comment;
 };

@@ -1,6 +1,6 @@
 import { useState, type SyntheticEvent } from "react";
 import type { blogPost } from "../../../../types/blogPosts";
-import "./addCommentForm.css"
+import "./addCommentForm.css";
 
 type AddCommentFormProps = {
   post: blogPost;
@@ -14,18 +14,21 @@ function AddCommentForm({ post, onCommentAdd }: AddCommentFormProps) {
     e.preventDefault();
 
     console.log(newCommentText, sessionStorage.getItem("username"), post.id);
-    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/comments/new", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    const rsp = await fetch(
+      "https://blog-api-backend-jfv8.onrender.com/comments/new",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          text: newCommentText,
+          username: sessionStorage.getItem("username"),
+          postid: post.id,
+        }),
       },
-      method: "POST",
-      body: JSON.stringify({
-        text: newCommentText,
-        username: sessionStorage.getItem("username"),
-        postid: post.id,
-      }),
-    });
+    );
     if (rsp.status != 201) {
       return console.log(rsp.body);
     }
