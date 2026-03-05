@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "prettier": "npx prettier . --write",
     "postinstall": "node ./postinstall.js",
-    "deploy": "gh-pages -d dist --dest Post-CRUD-Frontend"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -b gh-pages-blog"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
