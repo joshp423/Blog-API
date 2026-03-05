@@ -1,10 +1,7 @@
 import BlogPostOverview from "./BlogPost/blogPostOverview";
 import type { blogPost } from "../../types/blogPosts";
 import { useOutletContext } from "react-router-dom";
-import { Link } from "react-router-dom";
 import "./homepage.css"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 type OutletContextType = {
   blogPosts: blogPost[];
@@ -18,11 +15,6 @@ function Homepage() {
     return (
       <div className="hpMain">
         <div className="titleNavHp">
-          <div>
-            <Link to="/new-post">New Blog Post</Link>
-            <Link id="icon" to="/new-post"><FontAwesomeIcon icon={faPen} /></Link>
-            
-          </div>
           <h1>Blog Posts</h1>
         </div>
         <div className="blogContent">

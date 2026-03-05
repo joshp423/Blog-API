@@ -22,7 +22,6 @@
 .loginForm>form {
     display: flex;
     gap: 5px;
-    
 }
 
 .loginForm>form>input {
@@ -52,4 +51,36 @@
 .loginForm>a>svg {
     height: 18px;
 }
+
+.loading {
+    
+    margin: auto;
+    width: 4px;
+    height: 4px;
+    background: #586A6A;
+    border-radius: 50%;
+}
+
+@keyframes load {
+    from {
+      transform:
+        rotate(0deg)
+        translateX(5px);
+    }
+    to {
+      transform:
+        rotate(360deg)
+        translateX(5px);
+    }
+  }
+
+@media (
+    prefers-reduced-motion: no-preference
+  ) {
+    .loading {
+      animation:
+        load 1000ms linear infinite;
+    }
+  }
+
 

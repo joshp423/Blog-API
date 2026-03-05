@@ -8,7 +8,6 @@ type BlogPostOverviewProps = {
   post: blogPost;
 };
 
-// change strings to cut off text
 function BlogPostOverview({ post }: BlogPostOverviewProps) {
   
     const postDate = new Date(post.timeposted);

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./nav.css";
 import NavForm from "./NavForm/navForm";
 
+
 type NavProps = {
   setLoginStatus: (status: boolean) => void;
   Display: string;

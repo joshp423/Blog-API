@@ -2,6 +2,7 @@ import { useState, type SyntheticEvent, type SetStateAction, type Dispatch } fro
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import LoginSubmitLoading from ".././Login/loginSubmitLoading";
 
 type SignUpProps = {
   setDisplay: Dispatch<SetStateAction<string>>;
@@ -9,14 +10,13 @@ type SignUpProps = {
 
 function Signup({setDisplay}:SignUpProps) {
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   async function signupAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    // const apiUrl = import.meta.env.VITE_API_URL;
-    console.log(import.meta.env);
+    setLoading(true)
     const rsp = await fetch(`https://blog-api-backend-jfv8.onrender.com/sign-up`, {
       headers: {
         "Content-Type": "application/json",
@@ -25,9 +25,11 @@ function Signup({setDisplay}:SignUpProps) {
       body: JSON.stringify({ username, password }),
     });
     if (rsp.status != 201) {
+      setLoading(false);
       return console.log("invalid sign-up");
     }
-    navigate("/");
+    setLoading(false);
+    navigate(0);
   }
   
   return (
@@ -43,7 +45,9 @@ function Signup({setDisplay}:SignUpProps) {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Sign Up</button>
+        <LoginSubmitLoading 
+          loading={loading}
+        />
       </form>
       <a onClick={() => setDisplay("none")}>
         <FontAwesomeIcon icon={faX} />

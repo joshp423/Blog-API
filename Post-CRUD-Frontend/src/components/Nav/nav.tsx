@@ -2,6 +2,9 @@ import { type Dispatch, type SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import Login from "./Login/login";
 import "./nav.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+
 
 type NavProps = {
   setLoginStatus: (status: boolean) => void;
@@ -33,6 +36,12 @@ function Nav({ display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
             <button onClick={logOut}>Log Out</button>
           </h3>
         </div>
+        <div className="navNewButtonParent">
+          <div className="newBlogPost">
+            <Link to="/new-post">New Blog Post</Link>
+            <Link id="icon" to="/new-post"><FontAwesomeIcon icon={faPen} /></Link>
+          </div>
+          </div>
       </div>
     );
   }
