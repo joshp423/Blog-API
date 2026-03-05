@@ -21,6 +21,7 @@ const createPostBodySchema = z.object({
   title: z.string(),
   text: z.string(),
   published: z.boolean(),
+  author: z.string()
 });
 
 const editPostBodySchema = z.object({
@@ -29,6 +30,7 @@ const editPostBodySchema = z.object({
   title: z.string(),
   text: z.string(),
   published: z.boolean(),
+  author: z.string()
 });
 
 const createCommentBodySchema = z.object({
@@ -268,7 +270,7 @@ export async function getAuthorBlogPost(req: Request, res: Response) {
 
 export async function createNewBlogPost(req: Request, res: Response) {
   try {
-    const { title, text, published } = createPostBodySchema.parse(req.body);
+    const { title, text, published, author } = createPostBodySchema.parse(req.body);
 
     if (!title || !text) {
       return res.status(400).json({ message: "Missing fields" });
@@ -302,6 +304,7 @@ export async function createNewBlogPost(req: Request, res: Response) {
         text: cleanText,
         published,
         timeposted: new Date(),
+        author
       },
     });
 
@@ -313,8 +316,7 @@ export async function createNewBlogPost(req: Request, res: Response) {
 
 export async function editSelectedBlogPost(req: Request, res: Response) {
   try {
-    const { id, title, text, published } = editPostBodySchema.parse(req.body);
-    const published = req.body["published"];
+    const { id, title, text, published, author } = editPostBodySchema.parse(req.body);
 
     const cleanText = sanitizeHtml(text, {
       allowedTags: [
@@ -344,6 +346,7 @@ export async function editSelectedBlogPost(req: Request, res: Response) {
         title,
         text: cleanText,
         published,
+        author
       },
     });
 
