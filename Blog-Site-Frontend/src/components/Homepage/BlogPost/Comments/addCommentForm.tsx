@@ -1,5 +1,6 @@
 import { useState, type SyntheticEvent } from "react";
 import type { blogPost } from "../../../../types/blogPosts";
+import "./addCommentForm.css"
 
 type AddCommentFormProps = {
   post: blogPost;
@@ -34,7 +35,7 @@ function AddCommentForm({ post, onCommentAdd }: AddCommentFormProps) {
   return (
     <div className="addCommentForm">
       <form onSubmit={newCommentAPI}>
-        <label htmlFor="commentText">New Comment</label>
+        <label htmlFor="commentText">New Comment:</label>
         <textarea
           name="commentText"
           id="commentText"

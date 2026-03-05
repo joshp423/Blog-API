@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Nav from "./components/Nav/nav";
-import Login from "./components/Nav/Login/login";
 import "./App.css";
 import { type blogPost } from "./types/blogPosts";
 

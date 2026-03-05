@@ -1,5 +1,5 @@
 import type { comment } from "../../../../types/commentType";
-
+import "./comments.css"
 type CommentProps = {
   comment: comment;
 };
@@ -13,7 +13,7 @@ function Comment({ comment }: CommentProps) {
     hour12: true,
   });
   return (
-    <div>
+    <div className="comment">
       <h3>{comment.username}</h3>
       <h2>{comment.text}</h2>
       <p>

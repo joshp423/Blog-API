@@ -17,7 +17,6 @@ function BlogPost() {
   const [post, setPost] = useState<blogPost | null>(null);
   const [comments, setComments] = useState<comment[]>([]);
   const { loginStatus } = useOutletContext<OutletContextType>();
-  const [userId, setUserId] = useState<Number | null>(null)
 
   async function fetchComments() {
     const response = await fetch("https://blog-api-backend-jfv8.onrender.com/comments/view/", {
@@ -45,27 +44,11 @@ function BlogPost() {
       const data = await response.json();
       console.log(data);
       setPost(data.blogPost);
-      setUserId(data)
       return;
     }
 
-    async function fetchAuthor() {
-      const response = await fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/getAuthor", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "GET",
-        body: JSON.stringify({ postId: Number(postId) }),
-      });
-      const data = await response.json();
-      console.log(data);
-      setComments(data.comments);
-      return;
-    }
-    
 
     fetchPost();
-    fetchAuthor();
     fetchComments();
   }, [postId]); // dependency array
 
@@ -91,7 +74,7 @@ function BlogPost() {
             </p>
           </div>
           <div className="blogPostContent">
-            <h2>{String(sessionStorage.getItem("username"))}</h2>
+            <h2>{post.author}</h2>
             <div dangerouslySetInnerHTML={{__html:post.text}}></div>
           </div>
           
@@ -116,18 +99,19 @@ function BlogPost() {
           </p>
         </div>
         <div className="blogPostContent">
-          <h2>{String(sessionStorage.getItem("username"))}</h2>
+          <h2>{post.author}</h2>
           <div dangerouslySetInnerHTML={{__html:post.text}}></div>
         </div>
 
         <div className="commentsSection">
           <h2>No Comments</h2>
+          <AddCommentForm post={post} onCommentAdd={fetchComments} />
         </div>
-
         <button onClick={() => navigate('/')}>Back</button>
       </div>
     );
   }
+
   if (comments.length > 0) {
       return (
         <div className="blogPost">
@@ -138,7 +122,7 @@ function BlogPost() {
             </p>
           </div>
           <div className="blogPostContent">
-            <h2>{String(sessionStorage.getItem("username"))}</h2>
+            <h2>{post.author}</h2>
             <div dangerouslySetInnerHTML={{__html:post.text}}></div>
           </div>
           
@@ -147,7 +131,6 @@ function BlogPost() {
             {comments?.map((comment: comment) => (
               <Comment key={comment.id} comment={comment} />
             ))}
-            <AddCommentForm post={post} onCommentAdd={fetchComments} />
         </div>
           <button onClick={() => navigate('/')}>Back</button>
         </div>
@@ -163,7 +146,7 @@ function BlogPost() {
           </p>
         </div>
         <div className="blogPostContent">
-          <h2>{String(sessionStorage.getItem("username"))}</h2>
+          <h2>{post.author}</h2>
           <div dangerouslySetInnerHTML={{__html:post.text}}></div>
         </div>
 
