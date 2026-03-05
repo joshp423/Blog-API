@@ -1,6 +1,7 @@
 import { type Dispatch, type SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import "./nav.css";
+import Login from "./Login/login";
 
 type NavProps = {
   setLoginStatus: (status: boolean) => void;
@@ -57,6 +58,11 @@ function Nav({ display, setDisplay, loginStatus, setLoginStatus }: NavProps) {
           <Link to="sign-up">Sign Up</Link>
         </h3>
       </div>
+      <Login
+          setLoginStatus={setLoginStatus}
+          display={display}
+          setDisplay={setDisplay}
+      />
     </div>
   );
 }

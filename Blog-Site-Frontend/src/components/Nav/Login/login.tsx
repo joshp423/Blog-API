@@ -2,8 +2,15 @@ import { useState, type SyntheticEvent } from "react";
 import { type Dispatch, type SetStateAction } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import "./login.css";
+import "./login.css"
+import { jwtDecode } from "jwt-decode";
 
+type JwtPayload = {
+  id: number;
+  username: string;
+  iat: number;
+  exp: number;
+}
 type LoginProps = {
   setLoginStatus: (status: boolean) => void; //function that takes a boolean and doesnt return anything
   setDisplay: Dispatch<SetStateAction<string>>;
@@ -16,20 +23,26 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
 
   async function logInAPI(e: SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/log-in/viewer", {
+    const rsp = await fetch("https://blog-api-backend-jfv8.onrender.com/log-in/editor", {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify({ username, password }),
     });
+
+    if (!rsp.ok) {
+      const text = await rsp.text();
+      console.error(text)
+      return;
+    }
       const data = await rsp.json();
         if (data.message === "Successfully logged in") {
+          const decoded = jwtDecode<JwtPayload>(data.token);
           sessionStorage.setItem("token", data.token);
-          sessionStorage.setItem("username", data.username);
-          sessionStorage.setItem("loggedUser", data.username);
+          sessionStorage.setItem("username", decoded.username);
+          sessionStorage.setItem("loggedUser", decoded.username);
           setLoginStatus(true);
-          console.log(data.message, data.username);
           setDisplay("none");
         } else {
           console.log(data.message);
@@ -37,16 +50,16 @@ function Login({ setLoginStatus, setDisplay, display }: LoginProps) {
   }
 
   return (
-    <div className="loginForm" style={{ display: display }}>
+    <div className={`loginForm ${display !== "none" ? "active" : ""}`}>
       <form onSubmit={logInAPI}>
         <input
           type="text"
-          placeholder="username"
+          placeholder="Username"
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Submit</button>

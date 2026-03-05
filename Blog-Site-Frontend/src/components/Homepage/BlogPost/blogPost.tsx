@@ -17,6 +17,7 @@ function BlogPost() {
   const [post, setPost] = useState<blogPost | null>(null);
   const [comments, setComments] = useState<comment[]>([]);
   const { loginStatus } = useOutletContext<OutletContextType>();
+  const [userId, setUserId] = useState<Number | null>(null)
 
   async function fetchComments() {
     const response = await fetch("https://blog-api-backend-jfv8.onrender.com/comments/view/", {
@@ -44,10 +45,27 @@ function BlogPost() {
       const data = await response.json();
       console.log(data);
       setPost(data.blogPost);
+      setUserId(data)
       return;
     }
 
+    async function fetchAuthor() {
+      const response = await fetch("https://blog-api-backend-jfv8.onrender.com/blogPosts/getAuthor", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "GET",
+        body: JSON.stringify({ postId: Number(postId) }),
+      });
+      const data = await response.json();
+      console.log(data);
+      setComments(data.comments);
+      return;
+    }
+    
+
     fetchPost();
+    fetchAuthor();
     fetchComments();
   }, [postId]); // dependency array
 

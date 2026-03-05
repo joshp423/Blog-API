@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Nav from "./components/Nav/nav";
-import Login from "./components/Login/login";
+import Login from "./components/Nav/Login/login";
 import "./App.css";
 import { type blogPost } from "./types/blogPosts";
 
@@ -29,11 +29,6 @@ const App = () => {
         setDisplay={setDisplay}
         display={display}
         setLoginStatus={setLoginStatus}
-      />
-      <Login
-        setLoginStatus={setLoginStatus}
-        display={display}
-        setDisplay={setDisplay}
       />
       <Outlet context={{ blogPosts: blogPosts, loginStatus: loginStatus }} />
     </>
